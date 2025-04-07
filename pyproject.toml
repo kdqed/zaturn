@@ -1,0 +1,10 @@
+[project]
+name = "zaturn"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=0.4.1",
+    "python-lsp-server>=1.12.2",
+]
