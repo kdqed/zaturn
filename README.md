@@ -10,7 +10,8 @@ Currently Supported:
 
 Upcoming:
 - More SQL DBs (MySQL, PostgresQL, Clickhouse, etc.)
-- JSON
+- Excel Sheets (.xlsx, .xls)
+- JSON files
 - GIS data (GeoJSON, KML, shp etc.)
 
 
