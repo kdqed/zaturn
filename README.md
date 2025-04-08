@@ -1,4 +1,4 @@
-# Zaturn: An MCP to analyze your data using LLMs
+# Zaturn: Analyze your data using AI prompts
 
 Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
 
