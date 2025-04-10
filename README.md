@@ -2,13 +2,13 @@
   <img src="brand/logo.png" width="128" height="128">
 </p>
 
-# Zaturn: Your Co-pilot For Data Analytics & BI
+# Zaturn: Your Co-Pilot For Data Analytics & BI
 
 Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
 
 ## How Does It Work?
 
-The naivest method to ask an LLM to do any data analysis is to upload a dataset with a prompt. But that won't get you far, because AI has context window limitations, and it can only go through a few thousand rows at the best. Also, LLM's are not great at doing math.
+The naivest way to have an LLM analyze your data is to upload a dataset with a prompt. But that won't get you far, because AI has context window limitations, and it can only go through a few thousand rows at the best. Also, LLM's are not great at doing math.
 
 Using an MCP like Zaturn will keep your data where it is, and enable AI to draft and run SQL queries on the data. The LLM now processes only the queries and results instead of your entire dataset.
 
@@ -87,7 +87,9 @@ Based on the revenue of the last 3 months, forecast next month's revenue.
 - Generate Presentations & PDFs
 ```
 Manager: I need a presentation to show the boss. Can you do it by EOD?
-Analyst: EOD? I can get it done right now.
+Analyst: EOD?! Are you still in the 2010s? 
+I can get it done right now. Actually, you can do it right now.
+You know what? The boss can do it right now.
 ```
 - A notebook interface (something like Jupyter Notebook, but no-code. Only prompts)
 
