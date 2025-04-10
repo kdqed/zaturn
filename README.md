@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="brand/logo.png" width="64" height="64">
+  <img src="brand/logo.png" width="128" height="128">
 </p>
 
 # Zaturn: Analyze your data using AI prompts
