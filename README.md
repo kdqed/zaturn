@@ -1,3 +1,7 @@
+<p style="align: center;">
+  <img src="brand/logo.png" width="128" height="128">
+</p>
+
 # Zaturn: Analyze your data using AI prompts
 
 Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
@@ -13,7 +17,6 @@ Upcoming:
 - Excel Sheets (.xlsx, .xls)
 - JSON files
 - GIS data (GeoJSON, KML, shp etc.)
-
 
 ## Usage
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)
@@ -74,6 +77,11 @@ Plot a graph showing Japan's population change over the years.
 - Predictive analysis and forecasting, e.g.:
 ```
 Based on the revenue of the last 3 months, forecast next month's revenue.
+```
+- Generate Presentations & PDFs
+```
+Manager: I need a presentation to show the boss. Can you do it by EOD?
+Analyst: EOD? I can get it done right now.
 ```
 - A notebook interface (something like Jupyter Notebook, but no-code. Only prompts)
 
