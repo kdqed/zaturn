@@ -1,5 +1,8 @@
 import duckdb
+import pandas as pd
 import sqlalchemy
+from sqlalchemy.orm import Session
+from typing import List
 
 
 def determine_source_type(source: str):
@@ -26,36 +29,43 @@ def execute_query(source: str, query: str):
             else:
                 source += '?mode=ro'
             with sqlalchemy.create_engine(source).connect() as conn:
-                return conn.execute(sqlalchemy.text(query)).fetchall()
-                
+                result = conn.execute(sqlalchemy.text(query))
+                return pd.DataFrame(result)
+
         case "mysql":
             engine = sqlalchemy.create_engine(source)
-            with engine.connect() as conn:
-                conn.execute("SET SESSION TRANSACTION READ ONLY")
-                return conn.execute(sqlalchemy.text(query)).fetchall()
+            with Session(engine) as session:
+                session.autoflush = False
+                session.autocommit = False
+                session.flush = lambda *args: None
+                result = session.execute(sqlalchemy.text(query))
+                return pd.DataFrame(result)
 
         case "postgresql":
             engine = sqlalchemy.create_engine(source)
-            @sqlalchemy.event.listens_for(engine, "begin")
-            def receive_begin(conn):
-                conn.execute("SET TRANSACTION READ ONLY")
-                
             with engine.connect() as conn:
-                return conn.execute(sqlalchemy.text(query)).fetchall()
+                conn = conn.execution_options(
+                    isolation_level="SERIALIZABLE",
+                    postgresql_readonly=True,
+                    postgresql_deferrable=True,
+                )
+                with conn.begin():
+                    result = conn.execute(sqlalchemy.text(query))
+                    return pd.DataFrame(result)
 
         case "duckdb":
             conn = duckdb.connect(source, read_only=True)
-            return conn.execute(query).fetchall()
+            return conn.execute(query).df()
 
         case "csv":
             conn = duckdb.connect(database=':memory:')
             conn.execute(f"CREATE VIEW CSV AS SELECT * FROM read_csv('{source}')")
-            return conn.execute(query).fetchall()
+            return conn.execute(query).df()
 
         case "parquet":
             conn = duckdb.connect(database=':memory:')
             conn.execute(f"CREATE VIEW PARQUET AS SELECT * FROM read_parquet('{source}')")
-            return conn.execute(query).fetchall()
+            return conn.execute(query).df()
         
         case _:
             raise Exception("Unsupported Source")

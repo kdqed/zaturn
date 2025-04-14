@@ -4,20 +4,14 @@
 
 # Zaturn: Your Co-Pilot For Data Analytics & BI
 
-https://r2.pastebin.kdqed.com/zaturn.mp4
+https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
 
 Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
-
-## How Does It Work?
-
-The naivest way to have an LLM analyze your data is to upload a dataset with a prompt. But that won't get you far, because AI has context window limitations, and it can only go through a few thousand rows at the best. Also, LLM's are not great at doing math.
-
-Using an MCP like Zaturn will keep your data where it is, and enable AI to draft and run SQL queries on the data. The LLM now processes only the queries and results instead of your entire dataset.
 
 ## Data Sources
 
 Zaturn currently supports the following data sources: 
-- SQL Databases: SQLite, DuckDB
+- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL
 - Files: CSV, Parquet
 
 Upcoming:
@@ -25,6 +19,12 @@ Upcoming:
 - Excel Sheets (.xlsx, .xls)
 - JSON files
 - GIS data (GeoJSON, KML, shp etc.)
+
+## How Does It Work?
+
+The naivest way to have an LLM analyze your data is to upload a dataset with a prompt. But that won't get you far, because AI has context window limitations, and it can only go through a few thousand rows at the best. Also, LLM's are not great at doing math.
+
+Using an MCP like Zaturn will keep your data where it is, and enable AI to draft and run SQL queries on the data. The LLM now processes only the queries and results instead of your entire dataset.
 
 ## Usage
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)

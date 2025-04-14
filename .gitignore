@@ -11,3 +11,4 @@ wheels/
 
 # Project Related
 sample_dbs/
+localtests.py
