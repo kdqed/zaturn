@@ -10,8 +10,10 @@ from typing import List
 
 def determine_source_type(source: str):
     """Figure out the source type"""
-    if source.startswith(('sqlite://', 'mysql://', 'postgresql://')):
+    if source.startswith(('sqlite://', 'postgresql://')):
         return source.split("://")[0]
+    elif source.startswith("mysql+pymysql://"):
+        return source.split("://")[0].split('+')[0]
     elif source.endswith(".duckdb"):
         return "duckdb"
     elif source.endswith(".csv"):

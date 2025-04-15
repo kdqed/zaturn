@@ -26,7 +26,8 @@ In addition to providing tabular and textual summaries, Zaturn can also generate
 - Bar Plots
 
 > NOTE: The visuals will be shown only if your MCP client supports image rendering (e.g. Claude Desktop)
-> Else you need to add the `--noimg` argument in the MCP config. Then the plots will be stored as files and the file location will be returned. You can view the plots with your file browser.
+> 
+> If you MCP client does not support images (e.g. Cursor) add the `--noimg` argument in the MCP config. Then the plots will be stored as files and the file location will be returned. You can view the plots with your file browser.
 
 More visualization capabilities are being added.
 
@@ -55,6 +56,8 @@ $ git clone https://github.com/kdqed/zaturn.git
       "--directory",
       "/path/to/downloaded/folder",
       "mcp_server.py",
+      "mysql+pymysql://username:password@host:3306/dbname",
+      "postgresql://username:password@host:port/dbname",
       "sqlite:////full/path/to/sample_dbs/northwind.db",
       "/full/path/to/sample_dbs/titanic.parquet",
       "/full/path/to/sample_dbs/ny_aq.csv",
@@ -63,6 +66,16 @@ $ git clone https://github.com/kdqed/zaturn.git
   },
 }
 ```
+
+If your MCP client does not support images, add the `--noimg` flag after `mcp_server.py`:
+```json
+...
+      "mcp_server.py",
+      "--noimg",
+      "mysql+pymysql://username:password@host:3306/dbname",
+...
+```
+
 
 4. Set a system prompt if your LLM/IDE allows you to:
 ```

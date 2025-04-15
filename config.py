@@ -27,8 +27,8 @@ args = parser.parse_args()
 # Read sources
 SOURCES = args.sources
 if not SOURCES:
-    print("Error: At least one data source must be provided using the -s flag.")
-    print("Example: uv run --directory /path/to/zaturn mcp_server.py sqlite:///mydata.db data.csv")
+    print("Error: At least one data source must be provided.")
+    print("Example: uv run --directory /path/to/zaturn mcp_server.py sqlite:///path/to/mydata.db")
     sys.exit(1)
 
 
