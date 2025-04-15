@@ -8,25 +8,36 @@ https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
 
 Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
 
-## Data Sources
+## Features:
 
-Zaturn currently supports the following data sources: 
+### Multiple Data Sources 
+Zaturn can currently connect to the following data sources: 
 - SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL
 - Files: CSV, Parquet
 
-Upcoming:
-- More SQL DBs (MySQL, PostgresQL, Clickhouse, etc.)
-- Excel Sheets (.xlsx, .xls)
-- JSON files
-- GIS data (GeoJSON, KML, shp etc.)
+Connectors for more data sources are being added.
 
-## How Does It Work?
+### Visualizations
+In addition to providing tabular and textual summaries, Zaturn can also generate the following image visualizations
+
+- Scatter and Line Plots
+- Histograms
+- Strip and Box Plots
+- Bar Plots
+
+> NOTE: The visuals will be shown only if your MCP client supports image rendering (e.g. Claude Desktop)
+> Else you need to add the `--noimg` argument in the MCP config. Then the plots will be stored as files and the file location will be returned. You can view the plots with your file browser.
+
+More visualization capabilities are being added.
+
+
+## How Does Zaturn Work?
 
 The naivest way to have an LLM analyze your data is to upload a dataset with a prompt. But that won't get you far, because AI has context window limitations, and it can only go through a few thousand rows at the best. Also, LLM's are not great at doing math.
 
 Using an MCP like Zaturn will keep your data where it is, and enable AI to draft and run SQL queries on the data. The LLM now processes only the queries and results instead of your entire dataset.
 
-## Usage
+## Installation & Setup
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)
 
 2. Clone/Download this repository:
@@ -68,20 +79,17 @@ AI:
 [04/08/25 15:16:55] INFO     Processing request of type CallToolRequest                                      server.py:534
 The top 5 customers by revenue for Northwind are:
 
-1. **B's Beverages** with a revenue of $6,154,115.34
-2. **Hungry Coyote Import Store** with a revenue of $5,698,023.67
-3. **Rancho grande** with a revenue of $5,559,110.08
-4. **Gourmet Lanchonetes** with a revenue of $5,552,597.90
-5. **Ana Trujillo Emparedados y helados** with a revenue of $5,534,356.6
+1. B's Beverages with a revenue of $6,154,115.34
+2. Hungry Coyote Import Store** with a revenue of $5,698,023.67
+3. Rancho grande with a revenue of $5,559,110.08
+4. Gourmet Lanchonetes with a revenue of $5,552,597.90
+5. Ana Trujillo Emparedados y helados with a revenue of $5,534,356.6
 ```
 
 ## Roadmap
 
 - Support for more data source types
-- Data visualizations, e.g.:
-```
-Plot a graph showing Japan's population change over the years.
-```
+- More data visualizations
 - Predictive analysis and forecasting, e.g.:
 ```
 Based on the revenue of the last 3 months, forecast next month's revenue.
@@ -95,7 +103,7 @@ Analyst:
   I can get it done right now. Actually, you can do it right now.
   You know what? The boss can do it right now.
 ```
-- A notebook interface (something like Jupyter Notebook, but no-code. Only prompts)
+- A native notebook interface 
 
 If you have any specific requirements please feel free to raise an issue.
 

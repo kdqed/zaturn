@@ -1,7 +1,10 @@
+import config
 import duckdb
+import os
 import pandas as pd
 import sqlalchemy
 from sqlalchemy.orm import Session
+import time
 from typing import List
 
 
@@ -69,4 +72,16 @@ def execute_query(source: str, query: str):
         
         case _:
             raise Exception("Unsupported Source")
-    
+
+
+def save_query(df):
+    query_id = 'q' + str(int(time.time()))
+    filepath = os.path.join(config.QUERIES_DIR, f'{query_id}.parquet')
+    df.to_parquet(filepath, engine='pyarrow', index=False)
+    return query_id
+
+def load_query(query_id):
+    filepath = os.path.join(config.QUERIES_DIR, f'{query_id}.parquet')
+    df = pd.read_parquet(filepath, engine='pyarrow')
+    df.reset_index(drop=True, inplace=True)
+    return df
