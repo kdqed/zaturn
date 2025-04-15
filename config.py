@@ -35,5 +35,3 @@ if not SOURCES:
 # Other Settings
 RETURN_IMAGES = not args.noimg
 
-print(args, RETURN_IMAGES)
-
