@@ -32,7 +32,6 @@ zaturn_mcp = "zaturn:main"
 [project.urls]
 Homepage = "https://github.com/kdqed/zaturn"
 Issues = "https://github.com/kdqed/zaturn/issues"
-CI = "https://github.com/kdqed/zaturn/actions"
 
 [build-system]
 requires = [
