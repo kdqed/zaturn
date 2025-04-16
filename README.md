@@ -4,6 +4,10 @@
 
 # Zaturn: Your Co-Pilot For Data Analytics & BI
 
+<a href="https://glama.ai/mcp/servers/@kdqed/zaturn">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@kdqed/zaturn/badge" alt="Zaturn MCP server" />
+</a>
+
 https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
 
 Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
