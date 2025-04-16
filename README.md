@@ -43,7 +43,7 @@ Using an MCP like Zaturn will keep your data where it is, and enable AI to draft
 
 2. Install [Zaturn](https://pypi.org/project/zaturn/) with uv:
 ```bash
-$ uv tool install zaturn
+uv tool install zaturn
 ```
 
 3. Add to MCP config, with data sources:
