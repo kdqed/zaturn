@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="brand/logo.png" width="128" height="128">
+  <img src="https://github.com/kdqed/zaturn/raw/main/brand/logo.png" width="128" height="128">
 </p>
 
 # Zaturn: Your Co-Pilot For Data Analytics & BI
@@ -41,23 +41,19 @@ Using an MCP like Zaturn will keep your data where it is, and enable AI to draft
 ## Installation & Setup
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)
 
-2. Clone/Download this repository:
+2. Install [Zaturn](https://pypi.org/project/zaturn/) with uv:
 ```bash
-$ git clone https://github.com/kdqed/zaturn.git
+$ uv tool install zaturn
 ```
 
 3. Add to MCP config, with data sources:
 ```json
 "mcpServers": {
   "zaturn": {
-    "command": "uv",
+    "command": "zaturn_mcp",
     "args": [
-      "run",
-      "--directory",
-      "/path/to/downloaded/folder",
-      "mcp_server.py",
-      "mysql+pymysql://username:password@host:3306/dbname",
       "postgresql://username:password@host:port/dbname",
+      "mysql+pymysql://username:password@host:3306/dbname",
       "sqlite:////full/path/to/sample_dbs/northwind.db",
       "/full/path/to/sample_dbs/titanic.parquet",
       "/full/path/to/sample_dbs/ny_aq.csv",
@@ -67,10 +63,22 @@ $ git clone https://github.com/kdqed/zaturn.git
 }
 ```
 
-If your MCP client does not support images, add the `--noimg` flag after `mcp_server.py`:
+OR add a `sources.txt` to the Zaturn config directory:
+```
+postgresql://username:password@host:port/dbname
+mysql+pymysql://username:password@host:3306/dbname
+sqlite:////full/path/to/sample_dbs/northwind.db
+/full/path/to/sample_dbs/titanic.parquet
+/full/path/to/sample_dbs/ny_aq.csv
+/full/path/to/sample_dbs/duckdb_sample.duckdb
+```
+
+This file needs to be at `~/.config/zaturn/sources.txt` on Linux/MacOS and at `%APPDATA%\zaturn\sources.txt` on Windows.
+
+If your MCP client does not support image rendering, add the `--noimg` argument:
 ```json
 ...
-      "mcp_server.py",
+    "args": [
       "--noimg",
       "mysql+pymysql://username:password@host:3306/dbname",
 ...
@@ -86,10 +94,6 @@ You are a helpful data analysis assistant. Use only the tool provided data sourc
 ```
 User: List the top 5 customers by revenue for Northwind
 AI: 
-[04/08/25 15:16:47] INFO     Processing request of type ListToolsRequest                                     server.py:534
-[04/08/25 15:16:51] INFO     Processing request of type CallToolRequest                                      server.py:534
-[04/08/25 15:16:53] INFO     Processing request of type CallToolRequest                                      server.py:534
-[04/08/25 15:16:55] INFO     Processing request of type CallToolRequest                                      server.py:534
 The top 5 customers by revenue for Northwind are:
 
 1. B's Beverages with a revenue of $6,154,115.34
@@ -123,4 +127,4 @@ If you have any specific requirements please feel free to raise an issue.
 
 ## Example Dataset Credits
 
-THe [pokemon dataset compiled by Sarah Taha and PokéAPI](https://www.kaggle.com/datasets/sarahtaha/1025-pokemon) has been included under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+The [pokemon dataset compiled by Sarah Taha and PokéAPI](https://www.kaggle.com/datasets/sarahtaha/1025-pokemon) has been included under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license for demonstration purposes.

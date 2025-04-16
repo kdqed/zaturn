@@ -1,6 +1,7 @@
 import argparse
 import os
 import platformdirs
+import pkg_resources
 import sys
 
 # Basic Setup
@@ -37,11 +38,16 @@ if not source_list:
     source_list = args.sources
 
 if not source_list:
-    source_list = [os.path.join(os.getcwd(), 'example_data', 'all_pokemon_data.csv')]
+    source_list = [
+        pkg_resources.resource_filename(
+            'zaturn',
+            os.path.join('example_data', 'all_pokemon_data.csv')
+        )
+    ]
     print("No data sources provided. Loading example dataset for demonstration.")
     print(f"\nTo load your datasets, add them to {SOURCES_FILE} (one source URL or full file path per line)")
     print("\nOr use command line args to specify data sources:")
-    print("uv run --directory /path/to/zaturn mcp_server.py sqlite:///path/to/mydata.db")
+    print("zaturn_mcp sqlite:///path/to/mydata.db /path/to/my_file.csv")
     print(f"\nNOTE: Sources in command line args will be ignored if sources are found in {SOURCES_FILE}")
     
 SOURCES = {}
@@ -82,7 +88,6 @@ for s in source_list:
 
 # Other Settings
 RETURN_IMAGES = not args.noimg
-print(SOURCES)
 
 
 
