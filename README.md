@@ -120,3 +120,7 @@ Analyst:
 
 If you have any specific requirements please feel free to raise an issue.
 
+
+## Example Dataset Credits
+
+THe [pokemon dataset compiled by Sarah Taha and PokéAPI](https://www.kaggle.com/datasets/sarahtaha/1025-pokemon) has been included under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
