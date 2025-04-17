@@ -20,15 +20,17 @@ def list_sources() -> str:
         
         result = "Available data sources:\n\n"
         for source in config.SOURCES:
-            result += f"- {source}\n"
+            tables = _list_tables(source)
+            if type(tables) is List:
+                tables = ', '.join(tables)
+            result += f"- {source}\nHas tables: {tables}\n"
     
         return result
     except Exception as e:
         return str(e)
 
 
-@mcp.tool()
-def list_tables(source_id: str):
+def _list_tables(source_id: str):
     """
     Lists names of all tables/datasets in a given data source.
     Use run_query with appropriate SQL query to determine table structure
@@ -66,6 +68,43 @@ def list_tables(source_id: str):
 
     except Exception as e:
         return str(e)
+
+@mcp.tool()
+def describe_table(source_id: str, table_name: str) -> str:
+    """
+    Lists columns and their types in the specified table of specified data source.
+
+    Args:
+        source_id: The data source
+        table_name: The table in the data source
+    """
+    try:
+        source = config.SOURCES.get(source_id)
+        if not source:
+            return f"Source {source_id} Not Found"
+
+        match source['type']:
+            case 'sqlite':
+                result = query_utils.execute_query(source,
+                    f"PRAGMA table_info({table_name});"
+                )
+                return result.to_markdown(index=False)
+                
+            case 'postgresql':
+                result = query_utils.execute_query(source,
+                    f"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{table_name}';"
+                )
+                return result.to_markdown(index=False)
+                
+            case "mysql" | "duckdb" | "csv" | "parquet":
+                result = query_utils.execute_query(source,
+                    f"DESCRIBE {table_name};"
+                )
+                return result.to_markdown(index=False)
+    
+    except Exception as e:
+        return str(e)
+            
 
 @mcp.tool()
 def run_query(source_id: str, query: str) -> str:
