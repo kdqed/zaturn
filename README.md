@@ -1,18 +1,25 @@
-<p align="center">
-  <img src="https://github.com/kdqed/zaturn/raw/main/brand/logo.png" width="128" height="128">
-</p>
+<h1>
+  <img src="https://github.com/kdqed/zaturn/raw/main/brand/logo.png" width="64" height="64">
+  <span>Zaturn: Your Co-Pilot For Data Analytics & BI</span>
+</h1>
 
-# Zaturn: Your Co-Pilot For Data Analytics & BI
+---
+
+[![PyPI Downloads](https://static.pepy.tech/badge/zaturn)](https://pepy.tech/projects/zaturn) [Join The Discord](https://discord.gg/K8mECeVzpQ)
+
+Zaturn let's you analyze your data with AI; without needing you to write SQL/Python code or fiddling with overwhelming eye-candy dashboards. You can add Zaturn MCP to Claude Desktop (or any MCP client), connect your data sources, ask questions in natural language, and get insights with visualizations within minutes. With Zaturn, your AI can automatically the structure of the data you have and give you useful insights with a narrative. You can ask specific questions like "Who is my mosy valuable customer?", or let AI explore your data with a question like "Here's all the data I have, tell me how I can cut costs or increase revenue."
 
 <a href="https://glama.ai/mcp/servers/@kdqed/zaturn">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@kdqed/zaturn/badge" alt="Zaturn MCP server" />
 </a>
 
+**But I can just upload my data to ChatGPT and ask it analyze right?**
+
+Yes, but ChatGPT has an upload size limit of approximately 50MB for CSV files/spreadsheets, and uploading also takes time. Plus, it can't read data straight from your MySQL or PostgreSQL server. Zaturn can overcome all of these limitations, without moving your data anywhere. It does so by running SQL queries on the data, getting the results and processing them. It does not need to process the full data and keep it in its memory to answer your questions.
+
+## Zaturn in Action
+
 https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
-
-Zaturn is an open source, AI-powered data analysis/BI tool that can connect to your data sources, run SQL queries on it, and give you useful insights. Think of it like vibe data analysis, in the spirit of vibe coding. Currently Zaturn is available as an MCP (Model Context Protocol) Server that can be integrated into your favorite MCP Client (Claude, Cursor, etc.) A full fledged notebook interface is on the roadmap.
-
-[Join The Discord](https://discord.gg/K8mECeVzpQ)
 
 ## Features:
 
@@ -37,12 +44,6 @@ In addition to providing tabular and textual summaries, Zaturn can also generate
 
 More visualization capabilities are being added.
 
-
-## How Does Zaturn Work?
-
-The naivest way to have an LLM analyze your data is to upload a dataset with a prompt. But that won't get you far, because AI has context window limitations, and it can only go through a few thousand rows at the best. Also, LLM's are not great at doing math.
-
-Using an MCP like Zaturn will keep your data where it is, and enable AI to draft and run SQL queries on the data. The LLM now processes only the queries and results instead of your entire dataset.
 
 ## Installation & Setup
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/#installation-methods)
@@ -136,3 +137,7 @@ Analyst:
 ## Example Dataset Credits
 
 The [pokemon dataset compiled by Sarah Taha and PokéAPI](https://www.kaggle.com/datasets/sarahtaha/1025-pokemon) has been included under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license for demonstration purposes.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=kdqed/zaturn&type=Date)](https://www.star-history.com/#kdqed/zaturn&Date)
