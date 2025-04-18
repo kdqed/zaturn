@@ -1,21 +1,22 @@
 <h1>
-  <img src="https://github.com/kdqed/zaturn/raw/main/brand/logo.png" width="64" height="64">
-  <span>Zaturn: Your Co-Pilot For Data Analytics & BI</span>
+  <img src="https://github.com/kdqed/zaturn/raw/main/brand/logo.png" width="24" height="24">
+  <span>Zaturn: Your Co-Pilot For Data Analytics & Business Insights</span>
 </h1>
 
----
+Zaturn let's you analyze your data using AI chat; without needing you to write SQL/Python code or fiddling with aesthetically pleasing (but overwhelming) dashboards. You can add Zaturn MCP to Claude Desktop (or any MCP client), connect your data sources, ask questions in natural language, and get instant insights with visualizations. With Zaturn, your AI can automatically understand the kind of data you have, query it, and give you useful pointers with a coherent narrative. You can ask specific questions like "Who is our most valuable customer?", or let AI explore your data with a question like "Here's all the data we have, give us some ideas for the next quarter."
 
-[![PyPI Downloads](https://static.pepy.tech/badge/zaturn)](https://pepy.tech/projects/zaturn) [Join The Discord](https://discord.gg/K8mECeVzpQ)
+[![PyPI Downloads](https://static.pepy.tech/badge/zaturn)](https://pepy.tech/projects/zaturn) 
 
-Zaturn let's you analyze your data with AI; without needing you to write SQL/Python code or fiddling with overwhelming eye-candy dashboards. You can add Zaturn MCP to Claude Desktop (or any MCP client), connect your data sources, ask questions in natural language, and get insights with visualizations within minutes. With Zaturn, your AI can automatically the structure of the data you have and give you useful insights with a narrative. You can ask specific questions like "Who is my mosy valuable customer?", or let AI explore your data with a question like "Here's all the data I have, tell me how I can cut costs or increase revenue."
+[Join The Discord](https://discord.gg/K8mECeVzpQ)
+
 
 <a href="https://glama.ai/mcp/servers/@kdqed/zaturn">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/@kdqed/zaturn/badge" alt="Zaturn MCP server" />
 </a>
 
-**But I can just upload my data to ChatGPT and ask it analyze right?**
+## But I can just upload my data to ChatGPT and ask it analyze right?
 
-Yes, but ChatGPT has an upload size limit of approximately 50MB for CSV files/spreadsheets, and uploading also takes time. Plus, it can't read data straight from your MySQL or PostgreSQL server. Zaturn can overcome all of these limitations, without moving your data anywhere. It does so by running SQL queries on the data, getting the results and processing them. It does not need to process the full data and keep it in its memory to answer your questions.
+Yes, but ChatGPT has an upload size limit of approximately 50MB for CSV files/spreadsheets, and uploading also takes time. Plus, it can't read data straight from your MySQL or PostgreSQL server. Zaturn can overcome all of these limitations, without moving your data anywhere. It simply equips your AI with SQL and visualization capabilities so AI can query your data directly, get the results, process them, and give you instant insights. With Zaturn, AI does not need to process your full dataset and keep it in its memory to answer your questions about the data.
 
 ## Zaturn in Action
 
