@@ -140,6 +140,7 @@ Analyst:
 ## Support The Project
 
 If you find Zaturn useful, please support this project by:
+- Starring the Project
 - Spreading the word
 - [Pledging $9/month on Patreon](https://www.patreon.com/kdqed?utm_medium=github&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink)
 
