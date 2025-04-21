@@ -132,10 +132,18 @@ Analyst:
 ```
 - A native notebook interface 
 
-## Support And Feedback
+## Help And Feedback
 
 [Raise an issue](https://github.com/kdqed/zaturn/issues) or [join the Discord](https://discord.gg/K8mECeVzpQ).
 
+
+## Support The Projects
+
+If you find Zaturn useful, please support this project by:
+- Spreading the word
+- [Pledging $9/month on Patreon](https://www.patreon.com/kdqed?utm_medium=github&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink)
+
+Your support will enable me to dedicate more of my time to Zaturn.
 
 ## Example Dataset Credits
 
