@@ -1,4 +1,5 @@
 from fastmcp import FastMCP, Image
+import math
 import matplotlib.pyplot as plt
 import os
 import seaborn as sns
@@ -7,6 +8,7 @@ from typing import Any, Union, Optional
 from zaturn import config, query_utils
 
 sns.set_theme()
+sns.set_style('ticks')
 
 mcp = FastMCP("Zaturn Visualizations")
 
@@ -14,12 +16,53 @@ mcp = FastMCP("Zaturn Visualizations")
 def _plot_to_image(plot) -> Union[str, Image]:
     figure = plot.get_figure()
     filepath = os.path.join(config.VISUALS_DIR, str(int(time.time())) + '.png')
-    figure.savefig(filepath)
+    figure.savefig(filepath, bbox_inches='tight')
     plt.clf()
     if config.RETURN_IMAGES:
         return Image(path=filepath)
     else:
         return filepath
+
+
+def _fix_x_labels(plot, labels):
+    max_label_length = max(list(labels.map(lambda x: len(str(x)))))
+
+    LABEL_HIDE_FACTOR = 1
+    if len(labels) > 20:
+        LABEL_HIDE_FACTOR = math.ceil(len(labels)/20)
+
+    labels_to_show = list(labels)
+    ticks = list(plot.get_xticks()) 
+    if LABEL_HIDE_FACTOR > 1:
+        ticks = ticks[::LABEL_HIDE_FACTOR]
+        labels_to_show = labels_to_show[::LABEL_HIDE_FACTOR]
+            
+    plot.set_xticks(ticks, labels_to_show)
+    cutoff = 2 # for rotation
+    
+    if max_label_length >= 12:
+        cutoff = 3
+    elif max_label_length >= 10:
+        cutoff = 4
+    elif max_label_length >= 8:
+        cutoff = 5
+    elif max_label_length >= 7:
+        cutoff = 5
+    elif max_label_length >= 6:
+        cutoff = 6
+    elif max_label_length >= 5:
+        cutoff = 7
+    elif max_label_length >= 4:
+        cutoff = 9
+    elif max_label_length >= 3:
+        cutoff = 13
+    else:
+        cutoff = 15
+    
+    if len(labels)>cutoff:
+        plot.set_xticklabels(plot.get_xticklabels(), rotation=-45, ha='left', va='top')
+    
+    return plot
 
 
 # Relationships
@@ -42,6 +85,7 @@ def scatter_plot(
     """
     df = query_utils.load_query(query_id)
     plot = sns.scatterplot(df, x=x, y=y, hue=hue)
+    plot = _fix_x_labels(plot, df[x])
     return _plot_to_image(plot)
 
 
@@ -62,6 +106,7 @@ def line_plot(
     """
     df = query_utils.load_query(query_id)
     plot = sns.lineplot(df, x=x, y=y, hue=hue)
+    plot = _fix_x_labels(plot, df[x])
     return _plot_to_image(plot)
 
 
@@ -108,6 +153,7 @@ def strip_plot(
     """
     df = query_utils.load_query(query_id)
     plot = sns.stripplot(df, x=x, y=y, hue=hue, legend=legend)
+    plot = _fix_x_labels(plot, df[x])
     return _plot_to_image(plot)
 
 
@@ -128,6 +174,7 @@ def box_plot(
     """
     df = query_utils.load_query(query_id)
     plot = sns.boxplot(df, x=x, y=y, hue=hue)
+    plot = _fix_x_labels(plot, df[x])
     return _plot_to_image(plot)
 
 
@@ -150,6 +197,7 @@ def bar_plot(
     """
     df = query_utils.load_query(query_id)
     plot = sns.barplot(df, x=x, y=y, hue=hue, orient=orient)
+    plot = _fix_x_labels(plot, df[x])
     return _plot_to_image(plot)
 
 
