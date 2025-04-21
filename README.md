@@ -137,7 +137,7 @@ Analyst:
 [Raise an issue](https://github.com/kdqed/zaturn/issues) or [join the Discord](https://discord.gg/K8mECeVzpQ).
 
 
-## Support The Projects
+## Support The Project
 
 If you find Zaturn useful, please support this project by:
 - Spreading the word
