@@ -1,69 +1,23 @@
 from fastmcp import FastMCP, Image
 import math
-import matplotlib.pyplot as plt
 import os
-import seaborn as sns
+import plotly.express as px
 import time
 from typing import Any, Union, Optional
 from zaturn import config, query_utils
 
-sns.set_theme()
-sns.set_style('ticks')
 
 mcp = FastMCP("Zaturn Visualizations")
 
 
-def _plot_to_image(plot) -> Union[str, Image]:
-    figure = plot.get_figure()
+def _fig_to_image(fig) -> Union[str, Image]:
     filepath = os.path.join(config.VISUALS_DIR, str(int(time.time())) + '.png')
-    figure.savefig(filepath, bbox_inches='tight')
-    plt.clf()
+    fig.write_image(filepath)
     if config.RETURN_IMAGES:
         return Image(path=filepath)
     else:
         return filepath
-
-
-def _fix_x_labels(plot, labels):
-    max_label_length = max(list(labels.map(lambda x: len(str(x)))))
-
-    LABEL_HIDE_FACTOR = 1
-    if len(labels) > 20:
-        LABEL_HIDE_FACTOR = math.ceil(len(labels)/20)
-
-    labels_to_show = list(labels)
-    ticks = list(plot.get_xticks()) 
-    if LABEL_HIDE_FACTOR > 1:
-        ticks = ticks[::LABEL_HIDE_FACTOR]
-        labels_to_show = labels_to_show[::LABEL_HIDE_FACTOR]
-            
-    plot.set_xticks(ticks, labels_to_show)
-    cutoff = 2 # for rotation
-    
-    if max_label_length >= 12:
-        cutoff = 3
-    elif max_label_length >= 10:
-        cutoff = 4
-    elif max_label_length >= 8:
-        cutoff = 5
-    elif max_label_length >= 7:
-        cutoff = 5
-    elif max_label_length >= 6:
-        cutoff = 6
-    elif max_label_length >= 5:
-        cutoff = 7
-    elif max_label_length >= 4:
-        cutoff = 9
-    elif max_label_length >= 3:
-        cutoff = 13
-    else:
-        cutoff = 15
-    
-    if len(labels)>cutoff:
-        plot.set_xticklabels(plot.get_xticklabels(), rotation=-45, ha='left', va='top')
-    
-    return plot
-
+        
 
 # Relationships
 
@@ -72,7 +26,7 @@ def scatter_plot(
     query_id: str,
     x: str,
     y: str,
-    hue: str = None
+    color: str = None
     ):
     """
     Make a scatter plot with the dataframe obtained from running SQL Query against source
@@ -81,12 +35,12 @@ def scatter_plot(
         query_id: Previously run query to use for plotting
         x: Column name from SQL result to use for x-axis
         y: Column name from SQL result to use for y-axis
-        hue: Optional String; Column name from SQL result to use for coloring the points  
+        color: Optional; column name from SQL result to use for coloring the points, with color representing another dimension
     """
     df = query_utils.load_query(query_id)
-    plot = sns.scatterplot(df, x=x, y=y, hue=hue)
-    plot = _fix_x_labels(plot, df[x])
-    return _plot_to_image(plot)
+    fig = px.scatter(df, x=x, y=y, color=color)
+    fig.update_xaxes(autotickangles=[0, 45, 60, 90])
+    return _fig_to_image(fig)
 
 
 @mcp.tool()
@@ -94,7 +48,7 @@ def line_plot(
     query_id: str,
     x: str,
     y: str,
-    hue: str = None
+    color: str = None
     ):
     """
     Make a line plot with the dataframe obtained from running SQL Query against source
@@ -102,12 +56,12 @@ def line_plot(
         query_id: Previously run query to use for plotting
         x: Column name from SQL result to use for x-axis
         y: Column name from SQL result to use for y-axis
-        hue: Optional; column name from SQL result to use for drawing multiple colored lines
+        color: Optional; column name from SQL result to use for drawing multiple colored lines representing another dimension
     """
     df = query_utils.load_query(query_id)
-    plot = sns.lineplot(df, x=x, y=y, hue=hue)
-    plot = _fix_x_labels(plot, df[x])
-    return _plot_to_image(plot)
+    fig = px.line(df, x=x, y=y, color=color)
+    fig.update_xaxes(autotickangles=[0, 45, 60, 90])
+    return _fig_to_image(fig)
 
 
 # Distributions
@@ -116,21 +70,21 @@ def line_plot(
 def histogram(
     query_id: str,
     column: str,
-    hue: str = None,
-    bins: int = None
+    color: str = None,
+    nbins: int = None
     ):
     """
     Make a histogram with a column of the dataframe obtained from running SQL Query against source
     Args:
         query_id: Previously run query to use for plotting
         column: Column name from SQL result to use for the histogram
-        hue: Optional; column name from SQL result to use for drawing multiple colored histograms
-        bins: Optional; number of bins
+        color: Optional; column name from SQL result to use for drawing multiple colored histograms representing another dimension
+        nbins: Optional; number of bins
     """
     df = query_utils.load_query(query_id)
-    plot = sns.histplot(df, x=column, hue=hue, bins=bins)
-    return _plot_to_image(plot)
-
+    fig = px.histogram(df, x=column, color=color, nbins=nbins)
+    fig.update_xaxes(autotickangles=[0, 45, 60, 90])
+    return _fig_to_image(fig)
 
 # Categorical
 
@@ -139,8 +93,7 @@ def strip_plot(
     query_id: str,
     x: str,
     y: str = None,
-    hue: str = None,
-    legend: bool = False
+    color: str = None
     ):
     """
     Make a strip plot with the dataframe obtained from running SQL Query against source
@@ -148,34 +101,33 @@ def strip_plot(
         query_id: Previously run query to use for plotting
         x: Column name from SQL result to use for x axis
         y: Optional; column name from SQL result to use for y axis
-        hue: Optional; column name from SQL result to use for coloring the points
-        legend: Whether to draw a legend for the hue
+        color: Optional column name from SQL result to show multiple colored strips representing another dimension
     """
     df = query_utils.load_query(query_id)
-    plot = sns.stripplot(df, x=x, y=y, hue=hue, legend=legend)
-    plot = _fix_x_labels(plot, df[x])
-    return _plot_to_image(plot)
+    fig = px.strip(df, x=x, y=y, color=color)
+    fig.update_xaxes(autotickangles=[0, 45, 60, 90])
+    return _fig_to_image(fig)
 
 
 @mcp.tool()
 def box_plot(
     query_id: str,
-    x: str,
-    y: str = None,
-    hue: str = None
+    y: str,
+    x: str = None,
+    color: str = None
     ):
     """
     Make a box plot with the dataframe obtained from running SQL Query against source
     Args:
         query_id: Previously run query to use for plotting
-        x: Column name from SQL result to use for x axis
-        y: Optional; column name from SQL result to use for y axis
-        hue: Optional column name from SQL result to use for coloring the points
+        y: Column name from SQL result to use for y axis
+        x: Optional; Column name from SQL result to use for x axis
+        color: Optional column name from SQL result to show multiple colored bars representing another dimension
     """
     df = query_utils.load_query(query_id)
-    plot = sns.boxplot(df, x=x, y=y, hue=hue)
-    plot = _fix_x_labels(plot, df[x])
-    return _plot_to_image(plot)
+    fig = px.box(df, x=x, y=y, color=color)
+    fig.update_xaxes(autotickangles=[0, 45, 60, 90])
+    return _fig_to_image(fig)
 
 
 @mcp.tool()
@@ -183,8 +135,8 @@ def bar_plot(
     query_id: str,
     x: str,
     y: str = None,
-    hue: str = None,
-    orient: str = 'v'
+    color: str = None,
+    orientation: str = 'v'
     ):
     """
     Make a bar plot with the dataframe obtained from running SQL Query against source
@@ -192,12 +144,12 @@ def bar_plot(
         query_id: Previously run query to use for plotting
         x: Column name from SQL result to use for x axis
         y: Optional; column name from SQL result to use for y axis
-        hue: Optional column name from SQL result to use for coloring the bars
-        orient: Orientation of the box plot, use 'v' for vertical and 'h' for horizontal
+        color: Optional column name from SQL result to use as a 3rd dimension by splitting each bar into colored sections
+        orientation: Orientation of the box plot, use 'v' for vertical (default) and 'h' for horizontal. Be mindful of choosing the correct X and Y columns as per orientation
     """
     df = query_utils.load_query(query_id)
-    plot = sns.barplot(df, x=x, y=y, hue=hue, orient=orient)
-    plot = _fix_x_labels(plot, df[x])
-    return _plot_to_image(plot)
+    fig = px.bar(df, x=x, y=y, color=color, orientation=orientation)
+    fig.update_xaxes(autotickangles=[0, 45, 60, 90])
+    return _fig_to_image(fig)
 
 

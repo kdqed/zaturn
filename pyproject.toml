@@ -1,6 +1,6 @@
 [project]
 name = "zaturn"
-version = "0.1.4"
+version = "0.1.5"
 description = "AI Data Analysis MCP"
 authors = [
   {name = "Karthik Devan", email = "krtdvn@gmail.com"},
@@ -14,8 +14,10 @@ dependencies = [
     "cryptography>=44.0.2",
     "duckdb>=1.2.1",
     "fastmcp>=0.4.1",
+    "kaleido==0.2.1",
     "pandas>=2.2.3",
     "platformdirs>=4.3.7",
+    "plotly[express]>=6.0.1",
     "psycopg2-binary>=2.9.10",
     "pyarrow>=19.0.1",
     "pymysql>=1.1.1",
