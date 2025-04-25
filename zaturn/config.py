@@ -62,6 +62,9 @@ for s in source_list:
     elif source.startswith("mysql+pymysql://"):
         source_type = 'mysql'
         source_name = source.split('/')[-1].split('?')[0]
+    elif source.startswith('clickhouse://'):
+        source_type = 'clickhouse'
+        source_name = source.split('/')[-1].split('?')[0]
     elif source.endswith(".duckdb"):
         source_type = "duckdb"
         source_name = source.split('/')[-1].split('.')[0]

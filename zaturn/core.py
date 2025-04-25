@@ -62,7 +62,7 @@ def _list_tables(source_id: str):
                     if col.startswith("Tables_in_"):
                         return result[col].to_list()
                 
-            case "duckdb" | "csv" | "parquet":
+            case "duckdb" | "csv" | "parquet" | "clickhouse":
                 result = query_utils.execute_query(source, "SHOW TABLES")
                 return result['name'].to_list()
 
@@ -96,7 +96,7 @@ def describe_table(source_id: str, table_name: str) -> str:
                 )
                 return result.to_markdown(index=False)
                 
-            case "mysql" | "duckdb" | "csv" | "parquet":
+            case "mysql" | "duckdb" | "csv" | "parquet" | "clickhouse":
                 result = query_utils.execute_query(source,
                     f"DESCRIBE {table_name};"
                 )

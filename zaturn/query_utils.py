@@ -1,3 +1,4 @@
+import clickhouse_connect
 import duckdb
 import numpy as np
 import os
@@ -45,6 +46,11 @@ def execute_query(source: dict, query: str):
                 with conn.begin():
                     result = conn.execute(sqlalchemy.text(query))
                     return pd.DataFrame(result)
+
+        case "clickhouse":
+            client = clickhouse_connect.get_client(dsn=url)
+            client.query('SET readonly=1;')
+            return client.query_df(query, use_extended_dtypes=False)
 
         case "duckdb":
             conn = duckdb.connect(url, read_only=True)

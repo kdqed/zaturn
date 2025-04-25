@@ -1,6 +1,6 @@
 [project]
 name = "zaturn"
-version = "0.1.5"
+version = "0.1.6"
 description = "AI Data Analysis MCP"
 authors = [
   {name = "Karthik Devan", email = "krtdvn@gmail.com"},
@@ -11,6 +11,7 @@ maintainers = [
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "clickhouse-connect>=0.8.17",
     "cryptography>=44.0.2",
     "duckdb>=1.2.1",
     "fastmcp>=0.4.1",

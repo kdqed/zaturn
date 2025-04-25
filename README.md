@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
 
 ### Multiple Data Sources 
 Zaturn can currently connect to the following data sources: 
-- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL
+- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL, ClickHouse
 - Files: CSV, Parquet
 
 Connectors for more data sources are being added.
@@ -77,6 +77,7 @@ OR add a `sources.txt` to the Zaturn config directory:
 ```
 postgresql://username:password@host:port/dbname
 mysql+pymysql://username:password@host:3306/dbname
+clickhouse://username:password@host:port/dbname
 sqlite:////full/path/to/sample_dbs/northwind.db
 /full/path/to/sample_dbs/titanic.parquet
 /full/path/to/sample_dbs/ny_aq.csv
