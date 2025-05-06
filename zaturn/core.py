@@ -86,7 +86,7 @@ def describe_table(source_id: str, table_name: str) -> str:
         match source['type']:
             case 'sqlite':
                 result = query_utils.execute_query(source,
-                    f"PRAGMA table_info({table_name});"
+                    f'PRAGMA table_info({table_name});'
                 )
                 return result.to_markdown(index=False)
                 

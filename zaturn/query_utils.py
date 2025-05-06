@@ -13,16 +13,11 @@ from zaturn import config
 def execute_query(source: dict, query: str):
     """Run the query using the appropriate engine and read only config"""
     url = source['url']
-    
+                
     match source['type']:
         case "sqlite":
-            if "mode=ro" in url:
-                pass
-            elif '?' in url:
-                url += '&mode=ro'
-            else:
-                url += '?mode=ro'
             with sqlalchemy.create_engine(url).connect() as conn:
+                conn.execute(sqlalchemy.text('PRAGMA query_only = ON;'))
                 result = conn.execute(sqlalchemy.text(query))
                 return pd.DataFrame(result)
 
@@ -32,6 +27,7 @@ def execute_query(source: dict, query: str):
                 session.autoflush = False
                 session.autocommit = False
                 session.flush = lambda *args: None
+                session.execute(sqlalchemy.text('SET SESSION TRANSACTION READ ONLY;'))
                 result = session.execute(sqlalchemy.text(query))
                 return pd.DataFrame(result)
 

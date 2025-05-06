@@ -59,8 +59,9 @@ for s in source_list:
     elif source.startswith('postgresql://'):
         source_type = 'postgresql'
         source_name = source.split('/')[-1].split('?')[0]
-    elif source.startswith("mysql+pymysql://"):
+    elif source.startswith("mysql://") or source.startswith("mysql+pymysql://"):
         source_type = 'mysql'
+        s = s.replace('mysql://', 'mysql+pymysql://')
         source_name = source.split('/')[-1].split('?')[0]
     elif source.startswith('clickhouse://'):
         source_type = 'clickhouse'
