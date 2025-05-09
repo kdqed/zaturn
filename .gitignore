@@ -10,5 +10,5 @@ wheels/
 .venv
 
 # Project Related
-sample_dbs/
-localtests.py
+debug.py
+todo.md
