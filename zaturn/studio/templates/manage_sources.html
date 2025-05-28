@@ -1,0 +1,32 @@
+<section id="manage-sources">
+  <h1>➕ Add Some Data</h1>
+  <form 
+    id="datafile-form"
+    hx-post="/upload_datafile" 
+    hx-encoding='multipart/form-data'
+    hx-push-url="false"
+    >
+    <label>
+      <small>Upload A File (CSV / SQLite / DuckDB / Parquet)</small>
+      <input type="file" name="datafile" accept=".csv,.sqlite,.db,.duckdb,.parquet" placeholder="" required>
+    </label>
+    <button>⬆ Upload</button>
+    <progress value='0' max='100'></progress>
+  </form>
+
+  <script>
+    htmx.on('#datafile-form', 'htmx:xhr:progress', function(evt) {
+      htmx.find('#datafile-form progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100);
+    });
+  </script>
+
+  <form>
+    <label>
+      <small>Or Link A Database Using URL</small>
+      <input type="text" name="db_url" required placeholder="PostgreSQL / MySQL / Clickhouse">
+    </label>
+    <button>🔗 Connect</button>
+  </form>
+
+  
+</section>

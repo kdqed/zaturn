@@ -1,3 +1,6 @@
+### v0.2.0 ()
+- New location for sources.txt file on Linux. Use `~/.local/share/zaturn/sources.txt`.
+
 #### v0.1.7 (2025-05-06)
 - Ensured Read-Only For SQLite and MySQL
 

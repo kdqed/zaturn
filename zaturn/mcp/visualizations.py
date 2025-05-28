@@ -4,7 +4,7 @@ import os
 import plotly.express as px
 import time
 from typing import Any, Union, Optional
-from zaturn import config, query_utils
+from zaturn.mcp import config, query_utils
 
 
 mcp = FastMCP("Zaturn Visualizations")

@@ -1,7 +1,7 @@
 from fastmcp import FastMCP
 import os
 from typing import Any, List, Union
-from zaturn import config, query_utils
+from zaturn.mcp import config, query_utils
 
 mcp = FastMCP("Zaturn Core")
 
@@ -21,11 +21,12 @@ def list_sources() -> str:
         result = "Available data sources:\n\n"
         for source in config.SOURCES:
             tables = _list_tables(source)
-            if type(tables) is List:
+            if type(tables) is list:
                 tables = ', '.join(tables)
             result += f"- {source}\nHas tables: {tables}\n"
     
         return result
+        
     except Exception as e:
         return str(e)
 
@@ -86,7 +87,7 @@ def describe_table(source_id: str, table_name: str) -> str:
         match source['type']:
             case 'sqlite':
                 result = query_utils.execute_query(source,
-                    f'PRAGMA table_info({table_name});'
+                    f'PRAGMA table_info("{table_name}");'
                 )
                 return result.to_markdown(index=False)
                 
@@ -97,8 +98,11 @@ def describe_table(source_id: str, table_name: str) -> str:
                 return result.to_markdown(index=False)
                 
             case "mysql" | "duckdb" | "csv" | "parquet" | "clickhouse":
+                if ' ' in table_name:
+                    table_name = f'`{table_name}`'
+                    
                 result = query_utils.execute_query(source,
-                    f"DESCRIBE {table_name};"
+                    f'DESCRIBE {table_name};'
                 )
                 return result.to_markdown(index=False)
     

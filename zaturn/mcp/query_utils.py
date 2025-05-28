@@ -7,7 +7,7 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 import time
 from typing import List
-from zaturn import config
+from zaturn.mcp import config
 
 
 def execute_query(source: dict, query: str):

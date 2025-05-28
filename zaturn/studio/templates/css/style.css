@@ -1,0 +1,194 @@
+/* Fonts */
+@font-face {
+  font-family: "Jost";
+  src: url('/static/jost_var.ttf');
+}
+
+@font-face {
+  font-family: "Jost";
+  font-style: italic;
+  src: url('/static/jost_ital_var.ttf');
+}
+
+@font-face {
+  font-family: "Fira Code";
+  src: url('/static/fira_code.ttf');
+}
+
+@font-face {
+  font-family: "Noto Emoji";
+  src: url('/static/noto_emoji.ttf');
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  font-family: "Jost", "Noto Emoji", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg0: #ffffff;
+  --bg1: #f8f8f8;
+	--bg2: #dde3ee;
+  --t1: #445488;
+  --t2: #aab4d4;
+  --fg2: #3a4d74;
+  --fg1: #182030;
+	--base-size: clamp(16px, 1.6vw, 32px);
+	--max-width: calc(var(--base-size)*36);
+	font-size: var(--base-size);
+	letter-spacing: 0.02rem;
+}
+
+body {
+	font-size: 1rem;
+	background: var(--bg1);
+	color: var(--fg1);
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	grid-template-rows: auto 1fr;
+	align-content: stretch;
+	height: 100vh;
+}
+
+a {
+	color: var(--t1);
+	cursor: pointer;
+}
+
+header {
+  grid-area: 1 / 1 / 2 / 2;
+  padding: 0.5rem;
+  background: var(--bg2);
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.5rem;
+}
+
+header .logo {
+  width: 2rem;
+  height: 2rem;
+}
+
+nav {
+  grid-area: 2 / 1 / 3 / 2;
+  background: var(--bg2);
+  height: 100%;
+  align-self: start;
+}
+
+main {
+  grid-area: 1 / 2 / 3 / 3;
+  justify-items: center;
+  display: grid;
+  padding: 0.5rem;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+section {
+  display: inline-block;
+  width: 100%;
+  max-width: 120vh;
+  margin: 1rem 0;
+  padding: 0.5rem;
+}
+
+section>* {
+  margin: 1rem 0;
+}
+
+.btn, button {
+  text-decoration: none;
+  background: var(--bg2);
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.2rem;
+  color: var(--t1);
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid var(--t1);
+  outline: none;
+  font-size: inherit;
+}
+
+.btn:hover, button:hover, .btn:focus, button:focus {
+  opacity: 0.8;
+}
+
+code {
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
+}
+
+/* General Forms */
+form {
+  display: grid;
+  gap: 1.5rem;
+  background: var(--bg0);
+  padding: 0.5rem;
+}
+
+form label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+form small {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+form input {
+  border: none;
+  outline: none;
+  font-family: "Fira Code", monospace;
+  border-bottom: 1px solid var(--fg1);
+  color: var(--fg1);
+  font-size: 0.8rem;
+  padding: 0.2rem;
+}
+
+form input:focus {
+  color: var(--t1);
+  border-bottom: 1px solid var(--t1);
+}
+
+form button {
+  justify-self: start;
+}
+
+form .alert {
+  background: var(--bg0);
+  padding: 0.5rem;
+  border: 1px solid var(--bg2);
+}
+
+form progress[value="0"] {
+  display: none;
+}
+
+
+/*
+  SCREEN WISE CSS
+*/
+
+/* Setup Prompt */
+
+#setup-prompt {
+  margin-top: 5rem;
+}
+
+/* Open Project */
+
+#open-project {
+  margin-top: 5rem;
+}
+
+
+

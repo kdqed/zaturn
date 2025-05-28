@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Zaturn Studio</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	  <meta name="description" content="AI Data Analysis">
+	  <link rel="shortcut icon" type="image/png" href="/static/logo.png">
+
+    <style>
+      {% include('css/style.css') %}
+    </style>
+
+    <script src="/static/js/htmx.min.js"></script>
+  </head>
+  <body hx-target="main" hx-push-url="true">
+    <header>
+      <a hx-get="/">
+        <img src="/static/logo.svg" class="logo">
+      </a>
+      <a hx-get="/sources" title="Manage Sources">
+        🔗
+      </a>
+      <a hx-get="/settings" title="Settings">
+        ⚙
+      </a>
+    </header>
+    <nav>
+      Nav Here
+    </nav>
+    <main>
+      {{content | safe}}
+    </main>
+  </body>
+</html>

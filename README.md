@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://github.com/kdqed/zaturn/raw/main/brand/logo.png" width="24" height="24">
+  <img src="https://github.com/kdqed/zaturn/raw/main/zaturn/studio/static/logo.png" width="24" height="24">
   <span>Zaturn: Your Co-Pilot For Data Analytics & Business Insights</span>
 </h1>
 
@@ -84,7 +84,10 @@ sqlite:////full/path/to/sample_dbs/northwind.db
 /full/path/to/sample_dbs/duckdb_sample.duckdb
 ```
 
-This file needs to be at `~/.config/zaturn/sources.txt` on Linux/MacOS and at `%APPDATA%\zaturn\sources.txt` on Windows.
+This file needs to be placed at one of the following locations depending on your OS:
+- MacOS: `/Users/<your_username>/Library/Application Support/zaturn/sources.txt` 
+- Windows: `C:\Users\trentm\AppData\Local\zaturn\sources.txt`
+- Linux:  `~/.local/share/zaturn/sources.txt`
 
 If your MCP client does not support image rendering, add the `--noimg` argument:
 ```json

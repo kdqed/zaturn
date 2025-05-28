@@ -1,0 +1,21 @@
+<section id="settings">
+  <h1>
+    <a hx-get="/">⬅</a>
+    Settings
+  </h1>
+  <form hx-post="/save_settings" hx-target="#settings form" hx-swap="beforeend" hx-push-url="false">
+    <label>
+      <small>OPENAI API KEY*</small>
+      <input type="text" name="api_key" value="{{current['api_key']}}" required>
+    </label>
+    <label>
+      <small>MODEL NAME*</small>
+      <input type="text" name="api_model" value="{{current['api_model']}}" required>
+    </label>
+    <label>
+      <small>OPENAI API ENDPOINT (Leave blank to use default)</small>
+      <input type="text" name="api_endpoint" value="{{current['api_endpoint']}}">
+    </label>
+    <button>💾 Save</button>
+  </form>
+</section>

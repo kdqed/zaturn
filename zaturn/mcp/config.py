@@ -6,12 +6,10 @@ import sys
 
 # Basic Setup
 USER_DATA_DIR = platformdirs.user_data_dir('zaturn', 'zaturn')
-USER_CONFIG_DIR = platformdirs.user_config_dir('zaturn', 'zaturn')
 QUERIES_DIR = os.path.join(USER_DATA_DIR, 'queries')
 VISUALS_DIR = os.path.join(USER_DATA_DIR, 'visuals')
-SOURCES_FILE = os.path.join(USER_CONFIG_DIR, 'sources.txt')
+SOURCES_FILE = os.path.join(USER_DATA_DIR, 'sources.txt')
 
-os.makedirs(USER_CONFIG_DIR, exist_ok=True)
 os.makedirs(QUERIES_DIR, exist_ok=True)
 os.makedirs(VISUALS_DIR, exist_ok=True)
 
@@ -41,7 +39,7 @@ if not source_list:
     source_list = [
         pkg_resources.resource_filename(
             'zaturn',
-            os.path.join('example_data', 'all_pokemon_data.csv')
+            os.path.join('mcp', 'example_data', 'all_pokemon_data.csv')
         )
     ]
     print("No data sources provided. Loading example dataset for demonstration.")
