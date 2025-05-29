@@ -34,6 +34,7 @@
 	--bg2: #dde3ee;
   --t1: #445488;
   --t2: #aab4d4;
+  --red: #d43a3a;
   --fg2: #3a4d74;
   --fg1: #182030;
 	--base-size: clamp(16px, 1.6vw, 32px);
@@ -66,8 +67,12 @@ header {
   background: var(--bg2);
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 0.5rem;
+}
+
+header a {
+  text-decoration: none;
 }
 
 header .logo {
@@ -117,6 +122,11 @@ section>* {
   font-size: inherit;
 }
 
+.btn.danger, button.danger {
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
 .btn:hover, button:hover, .btn:focus, button:focus {
   opacity: 0.8;
 }
@@ -126,12 +136,25 @@ code {
   font-size: 0.8rem;
 }
 
+.row-c2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.alert {
+  background: var(--bg0);
+  padding: 0.5rem;
+  border: 1px solid var(--bg2);
+}
+
+
 /* General Forms */
 form {
   display: grid;
   gap: 1.5rem;
   background: var(--bg0);
-  padding: 0.5rem;
+  padding: 1rem 0.5rem;
 }
 
 form label {
@@ -163,12 +186,6 @@ form button {
   justify-self: start;
 }
 
-form .alert {
-  background: var(--bg0);
-  padding: 0.5rem;
-  border: 1px solid var(--bg2);
-}
-
 form progress[value="0"] {
   display: none;
 }
@@ -184,11 +201,32 @@ form progress[value="0"] {
   margin-top: 5rem;
 }
 
-/* Open Project */
+/* Manage Sources */
 
-#open-project {
-  margin-top: 5rem;
+#manage-sources .source-card {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  padding: 1rem;
+  background: var(--bg0);
+  border-radius: 0.2rem;
+  align-items: center;
+  gap: 1rem;
 }
+
+#manage-sources .source-card form {
+  padding: 0;
+  display: inline-block;
+  background: none;
+}
+
+#manage-sources .source-card button {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+#manage-sources .source-card button.inactive {
+  filter: grayscale(100%);
+} 
 
 
 

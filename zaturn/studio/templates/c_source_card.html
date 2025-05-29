@@ -1,0 +1,19 @@
+<div class="source-card" id="source-card-{{key}}">
+  <p><b>{{key}}</b></p>
+  
+  <form action="/source/toggle" method="POST">
+    <input type="hidden" name="key" value="{{key}}">
+    {% if active %}
+    <input type="hidden" name="new_status" value="inactive">
+    <button class="active" title="Currently visible to LLM, Click to Toggle">Active ✅</button> 
+    {% else %}
+    <input type="hidden" name="new_status" value="active">
+    <button class="inactive" title="Currently invisible to LLM, Click to Toggle">Inactive 😴</button>
+    {% endif %}
+  </form>
+
+  <form action="/source/delete" method="POST">
+    <input type="hidden" name="key" value="{{key}}">
+    <button class="danger">Delete 🗑</button>
+  </form>
+</div>

@@ -12,15 +12,18 @@
 
     <script src="/static/js/htmx.min.js"></script>
   </head>
-  <body hx-target="main" hx-push-url="true">
+  <body hx-boost="true" hx-target="main" hx-push-url="true">
     <header>
-      <a hx-get="/">
+      <a href="/">
         <img src="/static/logo.svg" class="logo">
       </a>
-      <a hx-get="/sources" title="Manage Sources">
+      <a href="/">
+        ✚
+      </a>
+      <a href="/sources/manage" title="Manage Sources">
         🔗
       </a>
-      <a hx-get="/settings" title="Settings">
+      <a href="/settings" title="Settings">
         ⚙
       </a>
     </header>

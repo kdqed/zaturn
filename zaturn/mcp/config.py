@@ -70,7 +70,7 @@ for s in source_list:
     elif source.endswith(".csv"):
         source_type = "csv"
         source_name = source.split('/')[-1].split('.')[0]
-    elif source.endswith(".parquet"):
+    elif source.endswith(".parquet") or source.endswith(".pq"):
         source_type = "parquet"
         source_name = source.split('/')[-1].split('.')[0]
     else:

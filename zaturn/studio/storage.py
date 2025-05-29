@@ -12,7 +12,9 @@ STATE_FILE = Path(USER_DATA_DIR) / 'studio.json'
 def load_state() -> dict:
     if os.path.exists(STATE_FILE):
         with open(STATE_FILE) as f:
-            return json.loads(f.read())
+            state = json.loads(f.read())
+            state['sources'] = state.get('sources', {})
+            return state
     else:
         return {}
 
@@ -29,4 +31,10 @@ def save_datafile(datafile, filename: str) -> Path:
     target_path = target_dir / filename
     datafile.save(target_path)
     return target_path
+
+
+def remove_datafile(filepath):
+    if filepath.startswith("sqlite:///"):
+        filepath = filepath.replace("sqlite:///", "")
+    os.remove(filepath)
     

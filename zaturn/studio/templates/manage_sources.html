@@ -1,32 +1,45 @@
 <section id="manage-sources">
-  <h1>➕ Add Some Data</h1>
-  <form 
-    id="datafile-form"
-    hx-post="/upload_datafile" 
-    hx-encoding='multipart/form-data'
-    hx-push-url="false"
-    >
-    <label>
-      <small>Upload A File (CSV / SQLite / DuckDB / Parquet)</small>
-      <input type="file" name="datafile" accept=".csv,.sqlite,.db,.duckdb,.parquet" placeholder="" required>
-    </label>
-    <button>⬆ Upload</button>
-    <progress value='0' max='100'></progress>
-  </form>
+  {% if sources %}
+    <h1>🔗 Your Data Sources</h1>
+    {% for key in sources %}
+      {% with key=key, active=sources[key]['active'] %}
+        {% include('c_source_card.html') %}
+      {% endwith %}
+    {% endfor %}
+  {% else %}
+    <h1>➕ Add Some Data</h1>
+  {% endif %}
 
-  <script>
-    htmx.on('#datafile-form', 'htmx:xhr:progress', function(evt) {
-      htmx.find('#datafile-form progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100);
-    });
-  </script>
-
-  <form>
-    <label>
-      <small>Or Link A Database Using URL</small>
-      <input type="text" name="db_url" required placeholder="PostgreSQL / MySQL / Clickhouse">
-    </label>
-    <button>🔗 Connect</button>
-  </form>
-
+  <div class="row-c2">
+    <form 
+      id="datafile-form"
+      action="/upload_datafile" 
+      enctype='multipart/form-data'
+      method="POST"
+      >
+      <label>
+        <small>Upload A File</small>
+        <input type="file" name="datafile" accept=".csv,.db,.sqlite,.sqlite3,.duckdb,.parquet,.pq" placeholder="" required>
+        <small><em>CSV / SQLite / DuckDB / Parquet</em></small>
+      </label>
+      <button>⬆ Upload</button>
+      <progress value='0' max='100'></progress>
+    </form>
+  
+    <script>
+      htmx.on('#datafile-form', 'htmx:xhr:progress', function(evt) {
+        htmx.find('#datafile-form progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100);
+      });
+    </script>
+  
+    <form action="/add_dataurl" method="POST">
+      <label>
+        <small>Or Link A Database Using URL</small>
+        <input type="text" name="db_url" required>
+        <small><em>PostgreSQL / MySQL / Clickhouse</em></small>
+      </label>
+      <button>🔗 Connect</button>
+    </form>
+  </div>
   
 </section>

@@ -1,9 +1,17 @@
 <section id="settings">
   <h1>
-    <a hx-get="/">⬅</a>
+    <a href="/">⬅</a>
     Settings
   </h1>
-  <form hx-post="/save_settings" hx-target="#settings form" hx-swap="beforeend" hx-push-url="false">
+  
+  {% if updated %}
+  <p class="alert">
+    <code>{{updated}}</code> 
+    ✅ Settings Updated!
+  </p>
+  {% endif %}
+  
+  <form action="/save_settings" method="post">
     <label>
       <small>OPENAI API KEY*</small>
       <input type="text" name="api_key" value="{{current['api_key']}}" required>
