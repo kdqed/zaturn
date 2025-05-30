@@ -7,8 +7,58 @@ import sqlalchemy
 from sqlalchemy.orm import Session
 import time
 from typing import List
-from zaturn.mcp import config
+from zaturn.tools import config
 
+
+def list_tables(source):
+    try:
+        match source['type']:
+            case "sqlite":
+                result = execute_query(source,
+                    "SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';"
+                )
+                return result['name'].to_list()
+
+            case "postgresql":
+                result = execute_query(source,
+                    "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';"
+                )
+                return result['tablename'].to_list()
+
+            case "mysql":
+                result = execute_query(source, "SHOW TABLES")
+                for col in list(result):
+                    if col.startswith("Tables_in_"):
+                        return result[col].to_list()
+                
+            case "duckdb" | "csv" | "parquet" | "clickhouse":
+                result = execute_query(source, "SHOW TABLES")
+                return result['name'].to_list()
+
+    except Exception as e:
+        return str(e)
+
+
+def describe_table(source, table_name):
+    match source['type']:
+        case 'sqlite':
+            return execute_query(source,
+                f'PRAGMA table_info("{table_name}");'
+            )
+            
+        case 'postgresql':
+            return execute_query(source,
+                f"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{table_name}';"
+            )
+            
+        case "mysql" | "duckdb" | "csv" | "parquet" | "clickhouse":
+            if ' ' in table_name:
+                table_name = f'`{table_name}`'
+                
+            return execute_query(source,
+                f'DESCRIBE {table_name};'
+            )
+            
 
 def execute_query(source: dict, query: str):
     """Run the query using the appropriate engine and read only config"""

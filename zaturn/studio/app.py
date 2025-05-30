@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config['state'] = storage.load_state()
 
 
-def wrap(content: str, fallback=None, retarget=None, reswap=None, retain_url=False) -> str:
+def boost(content: str, fallback=None, retarget=None, reswap=None, retain_url=False) -> str:
     if request.headers.get('hx-boosted'):
         response = make_response(content)
         if retarget:
@@ -28,16 +28,16 @@ def wrap(content: str, fallback=None, retarget=None, reswap=None, retain_url=Fal
 def home() -> str:
     state = app.config['state']
     if state.get('api_key') and state.get('sources'):
-        return wrap(render_template('new_conversation.html'))
+        return boost(render_template('new_conversation.html'))
     elif state.get('api_key'):
-        return wrap(render_template('manage_sources.html'))
+        return boost(render_template('manage_sources.html'))
     else:
-        return wrap(render_template('setup_prompt.html'))
+        return boost(render_template('setup_prompt.html'))
 
 
 @app.route('/settings')
 def settings() -> str:
-    return wrap(render_template(
+    return boost(render_template(
         'settings.html', 
         current = app.config['state'],
         updated = request.args.get('updated'),
@@ -55,7 +55,7 @@ def save_settings() -> str:
 
 @app.route('/sources/manage')
 def manage_sources() -> str:
-    return wrap(render_template(
+    return boost(render_template(
         'manage_sources.html',
         sources = app.config['state'].get('sources', {})
     ))
@@ -68,7 +68,7 @@ def source_toggle_active():
     app.config['state']['sources'][key]['active'] = new_active
     storage.save_state(app.config['state'])
     
-    return wrap(
+    return boost(
         render_template('c_source_card.html', key=key, active=new_active),
         fallback = redirect('/sources/manage'),
         retarget = f'#source-card-{key}',
@@ -159,5 +159,10 @@ def delete_source():
     del app.config['state']['sources'][key]
     storage.save_state(app.config['state'])
     return redirect('/sources/manage')
-        
+
+
+@app.route('/create_new_chat', methods=['POST'])
+def create_new_chat():
+    print(request.form)
+    return redirect('/')
         
