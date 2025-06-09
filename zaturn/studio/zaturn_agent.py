@@ -1,3 +1,6 @@
+import asyncio
+import json
+
 from agents import (
     Agent,
     OpenAIChatCompletionsModel,
@@ -7,18 +10,24 @@ from agents import (
 )
 from function_schema import get_function_schema
 from openai import AsyncOpenAI
+import httpx
 
 from zaturn.tools import ZaturnTools
 
 
 set_tracing_disabled(disabled=True)
-DEFAULT_BASE_URL = 'https://api.openai.com/v1/chat/completions'
+DEFAULT_BASE_URL = 'https://api.openai.com/v1'
 
 
 class ZaturnAgent:
     
     def __init__(self, state: dict):
-        
+        self._state = state
+        sources = {} 
+        for s in state['sources']:
+            if state['sources'][s]['active']:
+                sources[s] = state['sources'][s]
+                
         self._agent = Agent(
             name = "Zaturn",
             instructions = """
@@ -39,17 +48,34 @@ class ZaturnAgent:
             ),
             tools = list(map(
                 function_tool,
-                ZaturnTools(state['sources']).tools,
+                ZaturnTools(sources).tools,
             )),
         )
         
 
-    def get_reply(self, input_list):
-        result = Runner.run_sync(self._agent, input_list, max_turns=100)
-        print(result)
-        print(result.final_output)
-        
+    async def run_async(self, input_list):
+        result = await Runner.run(self._agent, input_list, max_turns=100)
+        return result.to_input_list()
+    
+    def run(self, question):
+        state = self._state
+        r = httpx.post(
+            url = f'{state["api_endpoint"]}/chat/completions',
+            headers = {
+                'Authorization': f'Bearer {state["api_key"]}'
+            },
+            json = {
+                'model': state["api_model"],
+                'messages': [{
+                    'role': 'user',
+                    'content': question,
+                }],
+            }
+        )
 
+        response = r.json()
+        print(response['usage'])
+        return [response['choices'][0]['message']]
 
 if __name__=="__main__":
     from zaturn.studio import storage
@@ -57,4 +83,4 @@ if __name__=="__main__":
         
 
     z = ZaturnAgent(state)
-    z.get_reply('List Data Sources')
+    print(z.run('Hello'))

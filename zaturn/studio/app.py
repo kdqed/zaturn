@@ -1,27 +1,34 @@
 from datetime import datetime
+import json
 
 from flask import Flask, make_response, redirect, request, render_template
+import mistune
+import tomli_w
 from werkzeug.utils import secure_filename
 
-from zaturn.studio import storage
+from zaturn.studio import storage, zaturn_agent
 
 
 app = Flask(__name__)
 app.config['state'] = storage.load_state()
 
 
-def boost(content: str, fallback=None, retarget=None, reswap=None, retain_url=False) -> str:
+def boost(content: str, fallback=None, retarget=None, reswap=None, push_url=None) -> str:
     if request.headers.get('hx-boosted'):
         response = make_response(content)
         if retarget:
             response.headers['hx-retarget'] = retarget
         if reswap:
             response.headers['hx-reswap'] = reswap
-        if retain_url:
-            response.headers['hx-push-url'] = 'false'
+        if push_url:
+            response.headers['hx-push-url'] = push_url
         return response
     else:
-        return fallback or render_template('_shell.html', content=content)
+        if fallback:
+            return fallback 
+        else:
+            slugs = storage.list_chats()
+            return render_template('_shell.html', content=content, slugs=slugs)
 
 
 @app.route('/')
@@ -73,7 +80,7 @@ def source_toggle_active():
         fallback = redirect('/sources/manage'),
         retarget = f'#source-card-{key}',
         reswap = 'outerHTML',
-        retain_url = True,
+        push_url = 'false',
     )
     
 
@@ -161,8 +168,68 @@ def delete_source():
     return redirect('/sources/manage')
 
 
+def prepare_chat_for_render(chat):
+    fn_calls = {}
+    for msg in chat['messages']:
+        if msg.get('role')=='assistant':
+            msg['html'] = mistune.html(msg['content'][0]['text'])
+        if msg.get('type')=='function_call':
+            fn_calls[msg['call_id']] = msg
+            fn_calls[msg['call_id']]['arguments'] = tomli_w.dumps(
+                json.loads(msg['arguments'])    
+            )        
+        if msg.get('type')=='function_call_output':
+            msg['call_details'] = fn_calls[msg['call_id']]
+            msg['html'] = mistune.html(msg['output'])
+    return chat
+
+
 @app.route('/create_new_chat', methods=['POST'])
 def create_new_chat():
-    print(request.form)
-    return redirect('/')
-        
+    question = request.form['question']
+    slug = storage.create_chat(question)
+    chat = storage.load_chat(slug)
+
+    agent = zaturn_agent.ZaturnAgent(app.config['state'])
+    chat['messages'] = agent.run(chat['messages'])
+    storage.save_chat(slug, chat)
+    chat = prepare_chat_for_render(chat)
+    
+    return boost(
+        ''.join([
+            render_template('nav.html', slugs=storage.list_chats()),
+            '<main id="main">',
+            render_template('chat.html', chat=chat),
+            '</main>'
+        ]),
+        reswap = 'multi:#sidebar,#main',
+        push_url = f'/c/{slug}',
+        fallback = redirect(f'/c/{slug}'),
+    )
+
+
+@app.route('/c/<slug>')
+def show_chat(slug: str):
+    chat = prepare_chat_for_render(storage.load_chat(slug))
+    return boost(render_template('chat.html', chat=chat))
+
+
+@app.route('/follow_up_message', methods=['POST'])
+def follow_up_message():
+    slug = request.form['slug']
+    chat = storage.load_chat(slug)
+    chat['messages'] += {
+        'role': 'user', 
+        'content': request.form['question'],
+    }
+
+    agent = zaturn_agent.ZaturnAgent(app.config['state'])
+    chat['messages'] = agent.run(chat['messages'])
+    storage.save_chat(slug, chat)
+    chat = prepare_chat_for_render(chat)
+
+    return boost(
+        render_template('chat.html', chat=chat),
+        push_url = 'false',
+        reswap = 'innerHTML scroll:bottom',
+    )

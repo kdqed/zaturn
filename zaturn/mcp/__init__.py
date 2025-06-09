@@ -80,7 +80,7 @@ for s in source_list:
                 break
             i += 1
 
-    SOURCES[source_id] = {'url': s, 'type': source_type}
+    SOURCES[source_id] = {'url': s, 'source_type': source_type}
 
 
 def ZaturnMCP(sources):

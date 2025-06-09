@@ -1,0 +1,7 @@
+<div class="function-call">
+  <pre class="function-name"><b>fn_call</b><code>{{msg['call_details']['name']}}</code></pre>
+  {% if msg['call_details']['arguments'] %}
+    <pre class="args"><code>{{msg['call_details']['arguments']}}</code></pre>
+  {% endif %}
+  {{ msg['html'] | safe}}
+</div>

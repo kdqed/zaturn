@@ -12,7 +12,7 @@ from zaturn.tools import config
 
 def list_tables(source):
     try:
-        match source['type']:
+        match source['source_type']:
             case "sqlite":
                 result = execute_query(source,
                     "SELECT name FROM sqlite_schema WHERE type ='table' AND name NOT LIKE 'sqlite_%';"
@@ -40,7 +40,7 @@ def list_tables(source):
 
 
 def describe_table(source, table_name):
-    match source['type']:
+    match source['source_type']:
         case 'sqlite':
             return execute_query(source,
                 f'PRAGMA table_info("{table_name}");'
@@ -64,7 +64,7 @@ def execute_query(source: dict, query: str):
     """Run the query using the appropriate engine and read only config"""
     url = source['url']
                 
-    match source['type']:
+    match source['source_type']:
         case "sqlite":
             with sqlalchemy.create_engine(url).connect() as conn:
                 conn.execute(sqlalchemy.text('PRAGMA query_only = ON;'))

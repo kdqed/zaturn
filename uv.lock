@@ -933,6 +933,15 @@ wheels = [
 ]
 
 [[package]]
+name = "mistune"
+version = "3.1.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/79/bda47f7dd7c3c55770478d6d02c9960c430b0cf1773b72366ff89126ea31/mistune-3.1.3.tar.gz", hash = "sha256:a7035c21782b2becb6be62f8f25d3df81ccb4d6fa477a6525b15af06539f02a0", size = 94347 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/01/4d/23c4e4f09da849e127e9f123241946c23c1e30f45a88366879e064211815/mistune-3.1.3-py3-none-any.whl", hash = "sha256:1a32314113cff28aa6432e99e522677c8587fd83e3d51c29b82a52409c842bd9", size = 53410 },
+]
+
+[[package]]
 name = "narwhals"
 version = "1.35.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1616,6 +1625,15 @@ wheels = [
 ]
 
 [[package]]
+name = "tomli-w"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/75/241269d1da26b624c0d5e110e8149093c759b7a286138f4efd61a60e75fe/tomli_w-1.2.0.tar.gz", hash = "sha256:2dd14fac5a47c27be9cd4c976af5a12d87fb1f0b4512f81d69cce3b35ae25021", size = 7184 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c7/18/c86eb8e0202e32dd3df50d43d7ff9854f8e0603945ff398974c1d91ac1ef/tomli_w-1.2.0-py3-none-any.whl", hash = "sha256:188306098d013b691fcadc011abd66727d3c414c571bb01b1a174ba8c983cf90", size = 6675 },
+]
+
+[[package]]
 name = "tqdm"
 version = "4.67.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1810,6 +1828,7 @@ dependencies = [
     { name = "flask", extra = ["async"] },
     { name = "function-schema" },
     { name = "kaleido" },
+    { name = "mistune" },
     { name = "openai" },
     { name = "openai-agents" },
     { name = "pandas" },
@@ -1823,6 +1842,7 @@ dependencies = [
     { name = "setuptools" },
     { name = "sqlalchemy" },
     { name = "tabulate" },
+    { name = "tomli-w" },
     { name = "werkzeug" },
 ]
 
@@ -1835,6 +1855,7 @@ requires-dist = [
     { name = "flask", extras = ["async"], specifier = ">=3.1.1" },
     { name = "function-schema", specifier = ">=0.4.5" },
     { name = "kaleido", specifier = "==0.2.1" },
+    { name = "mistune", specifier = ">=3.1.3" },
     { name = "openai", specifier = ">=1.82.1" },
     { name = "openai-agents", specifier = ">=0.0.16" },
     { name = "pandas", specifier = ">=2.2.3" },
@@ -1848,6 +1869,7 @@ requires-dist = [
     { name = "setuptools", specifier = ">=78.1.0" },
     { name = "sqlalchemy", specifier = ">=2.0.40" },
     { name = "tabulate", specifier = ">=0.9.0" },
+    { name = "tomli-w", specifier = ">=1.2.0" },
     { name = "werkzeug", specifier = ">=3.1.3" },
 ]
 
