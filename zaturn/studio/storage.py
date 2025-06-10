@@ -6,6 +6,7 @@ import urllib.parse
 
 
 import platformdirs
+from slugify import slugify
 
 
 USER_DATA_DIR = Path(platformdirs.user_data_dir('zaturn', 'zaturn'))
@@ -45,8 +46,7 @@ def remove_datafile(filepath):
 
 
 def create_chat(question: str):
-    slug = urllib.parse.quote_plus(question[:20].lower().replace(' ', '-'))
-    slug = slug.strip('-')
+    slug = slugify(question[:20]).strip("-")
     slug += '-' + str(hex(int(datetime.now().timestamp() * 1000000)))[2:]
     
     chat = {

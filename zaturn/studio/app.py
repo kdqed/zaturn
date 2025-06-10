@@ -6,7 +6,8 @@ import mistune
 import tomli_w
 from werkzeug.utils import secure_filename
 
-from zaturn.studio import storage, zaturn_agent
+from zaturn.studio import storage, agent_wrapper
+from zaturn.tools import ZaturnTools
 
 
 app = Flask(__name__)
@@ -168,19 +169,32 @@ def delete_source():
     return redirect('/sources/manage')
 
 
+def get_active_sources():
+    sources = {}
+    for key in app.config['state']['sources']:
+        source = app.config['state']['sources'][key]
+        if source['active']:
+            sources[key] = source
+    return sources
+
+
 def prepare_chat_for_render(chat):
     fn_calls = {}
     for msg in chat['messages']:
         if msg.get('role')=='assistant':
-            msg['html'] = mistune.html(msg['content'][0]['text'])
-        if msg.get('type')=='function_call':
-            fn_calls[msg['call_id']] = msg
-            fn_calls[msg['call_id']]['arguments'] = tomli_w.dumps(
-                json.loads(msg['arguments'])    
-            )        
-        if msg.get('type')=='function_call_output':
-            msg['call_details'] = fn_calls[msg['call_id']]
-            msg['html'] = mistune.html(msg['output'])
+            if msg.get('tool_calls'):
+                msg['is_tool_call'] = True
+                for tool_call in msg['tool_calls']:
+                    fn_call = tool_call['function']
+                    fn_call['arguments'] = tomli_w.dumps(
+                        json.loads(fn_call['arguments'])
+                    ).replace('\n', '<br>')
+                    fn_calls[tool_call['id']] = fn_call
+            else:
+                msg['html'] = mistune.html(msg['content'])
+        if msg.get('role')=='tool':
+            msg['call_details'] = fn_calls[msg['tool_call_id']]
+            msg['html'] = mistune.html(json.loads(msg['content']))
     return chat
 
 
@@ -190,7 +204,13 @@ def create_new_chat():
     slug = storage.create_chat(question)
     chat = storage.load_chat(slug)
 
-    agent = zaturn_agent.ZaturnAgent(app.config['state'])
+    state = app.config['state']
+    agent = agent_wrapper.Agent(
+        endpoint = state['api_endpoint'],
+        api_key = state['api_key'],
+        model = state['api_model'],
+        tools = ZaturnTools(get_active_sources()).tools,
+    )
     chat['messages'] = agent.run(chat['messages'])
     storage.save_chat(slug, chat)
     chat = prepare_chat_for_render(chat)
@@ -218,12 +238,18 @@ def show_chat(slug: str):
 def follow_up_message():
     slug = request.form['slug']
     chat = storage.load_chat(slug)
-    chat['messages'] += {
+    chat['messages'].append({
         'role': 'user', 
         'content': request.form['question'],
-    }
+    })
 
-    agent = zaturn_agent.ZaturnAgent(app.config['state'])
+    state = app.config['state']
+    agent = agent_wrapper.Agent(
+        endpoint = state['api_endpoint'],
+        api_key = state['api_key'],
+        model = state['api_model'],
+        tools = ZaturnTools(get_active_sources()).tools,
+    )
     chat['messages'] = agent.run(chat['messages'])
     storage.save_chat(slug, chat)
     chat = prepare_chat_for_render(chat)

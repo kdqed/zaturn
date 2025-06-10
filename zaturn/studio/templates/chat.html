@@ -2,9 +2,9 @@
   {% for msg in chat['messages'] %}
     {% if msg['role']=='user' %}
       {% include('user_message.html') %}
-    {% elif msg['role']=='assistant' %}
+    {% elif msg['role']=='assistant' and not msg['is_tool_call'] %}
       {% include('ai_message.html') %}
-    {% elif msg['type']=='function_call_output' %}
+    {% elif msg['role']=='tool' %}
       {% include('function_call.html') %}
     {% endif %}
   {% endfor %}
@@ -18,4 +18,5 @@
     ></textarea>
     <button>➡</button>
   </form>
+  {% include('loader.html') %}
 </section>

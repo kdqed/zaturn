@@ -5,7 +5,7 @@ from pydantic import Field
 from zaturn.tools import query_utils
 
 
-class Attach:
+class Core:
 
     def __init__(self, data_sources): 
         self.data_sources = data_sources

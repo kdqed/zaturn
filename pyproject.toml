@@ -28,6 +28,7 @@ dependencies = [
     "pyarrow>=19.0.1",
     "pymysql>=1.1.1",
     "python-lsp-server>=1.12.2",
+    "python-slugify>=8.0.4",
     "seaborn>=0.13.2",
     "setuptools>=78.1.0",
     "sqlalchemy>=2.0.40",
