@@ -3,6 +3,7 @@ import json
 
 from function_schema import get_function_schema
 import httpx
+from mcp.types import ImageContent
 
 
 class Agent:
@@ -12,11 +13,13 @@ class Agent:
         api_key: str,
         model: str,
         tools: list = [],
+        image_input: bool = False,
     ):
     
         self._post_url = f'{endpoint}/chat/completions'
         self._api_key = api_key
         self._model = model
+        self._image_input = image_input
         self._system_message = {
             'role': 'system',
             'content': """
@@ -39,6 +42,36 @@ class Agent:
                 'function': tool_schema,
             })
             self._tool_map[tool_schema['name']] = tool
+
+
+    def _prepare_input_messages(self, messages):
+        input_messages = [self._system_message]
+        for message in messages:
+            if message['role']!='tool':
+                input_messages.append(message)
+            elif type(message['content']) is not list:
+                input_messages.append(message)
+            else:
+                new_content = []
+                for content in message['content']:
+                    if content['type']=='image_url':
+                        if self._image_input:
+                            new_content.append(content)
+                        else:
+                            new_content.append({
+                                'type': 'text',
+                                'text': 'tool call returned an image',
+                            })
+                    else:
+                        new_content.append(content)
+                input_messages.append({
+                    'role': message['role'],
+                    'tool_call_id': message['tool_call_id'],
+                    'name': message['name'],
+                    'content': new_content,
+                })
+        print(input_messages)
+        return input_messages                
         
     
     def run(self, messages):
@@ -53,13 +86,14 @@ class Agent:
                 },
                 json = {
                     'model': self._model,
-                    'messages': [self._system_message] + messages,
+                    'messages': self._prepare_input_messages(messages),
                     'tools': self._tools,
                     'reasoning': {'exclude': True},
                 }
             )
 
             resj = res.json()
+            print(resj)
             reply = resj['choices'][0]['message']
             messages.append(reply)
 
@@ -69,11 +103,26 @@ class Agent:
                     tool_name = tool_call['function']['name']
                     tool_args = json.loads(tool_call['function']['arguments'])
                     tool_response = self._tool_map[tool_name](**tool_args)
+                    if type(tool_response) is ImageContent:
+                        b64_data = tool_response.data
+                        data_url = f'data:image/png;base64,{b64_data}'
+                        content = [{
+                            'type': 'image_url',
+                            'image_url': {
+                                "url": data_url,
+                            }                            
+                        }]
+                    else:
+                        content = [{
+                            'type': 'text',
+                            'text': json.dumps(tool_response)
+                        }]
+                        
                     messages.append({
                         'role': 'tool',
                         'tool_call_id': tool_call['id'],
                         'name': tool_name,
-                        'content': json.dumps(tool_response)
+                        'content': content
                     })
             else:
                 break

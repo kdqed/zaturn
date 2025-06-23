@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 
 from flask import Flask, make_response, redirect, request, render_template
+import httpx
 import mistune
 import tomli_w
 from werkzeug.utils import secure_filename
@@ -55,8 +56,22 @@ def settings() -> str:
 @app.route('/save_settings', methods=['POST'])
 def save_settings() -> str:
     app.config['state']['api_key'] = request.form.get('api_key')
-    app.config['state']['api_model'] = request.form.get('api_model')
-    app.config['state']['api_endpoint'] = request.form.get('api_endpoint')
+
+    api_model = request.form.get('api_model').strip('/')
+    api_endpoint = request.form.get('api_endpoint').strip('/')
+    app.config['state']['api_model'] = api_model
+    app.config['state']['api_endpoint'] = api_endpoint
+    app.config['state']['api_image_input'] = False
+    
+    try:
+        model_info = httpx.get(
+            url = f'{api_endpoint}/models/{api_model}/endpoints'
+        ).json()
+        input_modalities = model_info['data']['architecture']['input_modalities']
+        if 'image' in input_modalities:
+            app.config['state']['api_image_input'] = True
+    except:
+        pass
     storage.save_state(app.config['state'])
     return redirect(f'/settings?updated={datetime.now().isoformat().split(".")[0]}')
 
@@ -194,7 +209,17 @@ def prepare_chat_for_render(chat):
                 msg['html'] = mistune.html(msg['content'])
         if msg.get('role')=='tool':
             msg['call_details'] = fn_calls[msg['tool_call_id']]
-            msg['html'] = mistune.html(json.loads(msg['content']))
+            if type(msg['content']) is str:
+                msg['html'] = mistune.html(json.loads(msg['text']))
+            elif type(msg['content']) is list:
+                msg['html'] = ''
+                for content in msg['content']:
+                    if content['type'] == 'image_url':
+                        data_url = content['image_url']['url']
+                        msg['html'] += f'<img src="{data_url}">'
+                    else:
+                        msg['html'] += mistune.html(json.loads(content['text']))
+                
     return chat
 
 
@@ -210,6 +235,7 @@ def create_new_chat():
         api_key = state['api_key'],
         model = state['api_model'],
         tools = ZaturnTools(get_active_sources()).tools,
+        image_input = state['api_image_input'],
     )
     chat['messages'] = agent.run(chat['messages'])
     storage.save_chat(slug, chat)
@@ -249,6 +275,7 @@ def follow_up_message():
         api_key = state['api_key'],
         model = state['api_model'],
         tools = ZaturnTools(get_active_sources()).tools,
+        image_input = state['api_image_input'],
     )
     chat['messages'] = agent.run(chat['messages'])
     storage.save_chat(slug, chat)

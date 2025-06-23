@@ -22,6 +22,7 @@ dependencies = [
     "openai>=1.82.1",
     "openai-agents>=0.0.16",
     "pandas>=2.2.3",
+    "pillow>=11.2.1",
     "platformdirs>=4.3.7",
     "plotly[express]>=6.0.1",
     "psycopg2-binary>=2.9.10",
