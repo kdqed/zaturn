@@ -53,15 +53,14 @@ class Agent:
                 input_messages.append(message)
             else:
                 new_content = []
+                image_content = None
                 for content in message['content']:
                     if content['type']=='image_url':
-                        if self._image_input:
-                            new_content.append(content)
-                        else:
-                            new_content.append({
-                                'type': 'text',
-                                'text': 'tool call returned an image',
-                            })
+                        image_content = content
+                        new_content.append({
+                            'type': 'text',
+                            'text': 'Tool call returned an image to the user.',
+                        })
                     else:
                         new_content.append(content)
                 input_messages.append({
@@ -70,7 +69,7 @@ class Agent:
                     'name': message['name'],
                     'content': new_content,
                 })
-        print(input_messages)
+
         return input_messages                
         
     
@@ -92,8 +91,8 @@ class Agent:
                 }
             )
 
+            print(res.text)
             resj = res.json()
-            print(resj)
             reply = resj['choices'][0]['message']
             messages.append(reply)
 
