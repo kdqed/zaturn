@@ -3,8 +3,6 @@
   <span>Zaturn: Your Co-Pilot For Data Analytics & Business Insights</span>
 </h1>
 
-[![PyPI Downloads](https://static.pepy.tech/badge/zaturn)](https://pepy.tech/projects/zaturn) 
-
 <a href="https://discord.gg/K8mECeVzpQ">
   <img src="https://zaturn.pro/assets/discord-full.png" height="20" width="133" alt="Discord Logo">
 </a>

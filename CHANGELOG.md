@@ -1,5 +1,7 @@
-### v0.2.0 ()
-- New location for sources.txt file on Linux. Use `~/.local/share/zaturn/sources.txt`.
+### v0.2.0 (2025-07-01)
+- The Studio Interface: Now use Zaturn with an inbuilt UI, with your own LLM API.
+- Refactored MCP Code.
+- Removed `show_query_result` tool. Query results will now be returned directly.
 
 #### v0.1.7 (2025-05-06)
 - Ensured Read-Only For SQLite and MySQL
