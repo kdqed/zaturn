@@ -6,8 +6,7 @@
 [![PyPI Downloads](https://static.pepy.tech/badge/zaturn)](https://pepy.tech/projects/zaturn) 
 
 <a href="https://discord.gg/K8mECeVzpQ">
-  <img src="https://zaturn.pro/assets/discord.png" height="20" width="26" alt="Discord Logo">
-  Join the Discord
+  <img src="https://zaturn.pro/assets/discord-full.png" height="20" width="26" alt="Discord Logo">
 </a>
 
 ## Just Chat With Your Data! No SQL, No Python.
