@@ -11,26 +11,27 @@
     </style>
 
     <script src="/static/js/htmx.min.js"></script>
+    <script src="/static/js/htmx-multi-swap.js"></script>
   </head>
-  <body hx-boost="true" hx-target="main" hx-push-url="true">
+  <body hx-boost="true" hx-target="main" hx-push-url="true" hx-ext="multi-swap">
     <header>
       <a href="/">
         <img src="/static/logo.svg" class="logo">
       </a>
       <a href="/">
-        ✚
+        💬
       </a>
       <a href="/sources/manage" title="Manage Sources">
-        🔗
+        📎
       </a>
       <a href="/settings" title="Settings">
-        ⚙
+        🛠
       </a>
     </header>
-    <nav>
-      Nav Here
-    </nav>
-    <main>
+    {% with slugs=slugs %}
+      {% include('nav.html') %}
+    {% endwith %}
+    <main id="main">
       {{content | safe}}
     </main>
   </body>

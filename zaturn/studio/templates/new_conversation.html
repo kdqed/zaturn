@@ -1,4 +1,13 @@
-<section>
+<section id="new-conversation">
   <h1>Vamos! ᯓ★</h1>
   <p>An AMA Session With Your Data</p>
+  <form action="/create_new_chat" method="POST">
+    <textarea 
+      required 
+      name="question" 
+      placeholder="Type your question here...&#10E.g.: Explore the linked data and tell me something useful."
+    ></textarea>
+    <button>➡</button>
+  </form>
+  {% include('loader.html') %}
 </section>

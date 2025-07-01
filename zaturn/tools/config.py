@@ -48,7 +48,7 @@ if not source_list:
     print("zaturn_mcp sqlite:///path/to/mydata.db /path/to/my_file.csv")
     print(f"\nNOTE: Sources in command line args will be ignored if sources are found in {SOURCES_FILE}")
     
-SOURCES = {}
+CLI_SOURCES = {}
 for s in source_list:
     source = s.lower()
     if source.startswith('sqlite://'):
@@ -77,7 +77,7 @@ for s in source_list:
         continue
 
     source_id = f'{source_name}-{source_type}'
-    if source_id in SOURCES:
+    if source_id in CLI_SOURCES:
         i = 2
         while True:
             source_id = f'{source_name}{i}-{source_type}'
@@ -85,11 +85,11 @@ for s in source_list:
                 break
             i += 1
 
-    SOURCES[source_id] = {'url': s, 'type': source_type}
+    CLI_SOURCES[source_id] = {'url': s, 'type': source_type}
 
 
 # Other Settings
-RETURN_IMAGES = not args.noimg
+CLI_RETURN_IMAGES = not args.noimg
 
 
 

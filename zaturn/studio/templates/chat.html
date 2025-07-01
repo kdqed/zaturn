@@ -1,0 +1,22 @@
+<section id="chat">
+  {% for msg in chat['messages'] %}
+    {% if msg['role']=='user' %}
+      {% include('user_message.html') %}
+    {% elif msg['role']=='assistant' and not msg['is_tool_call'] %}
+      {% include('ai_message.html') %}
+    {% elif msg['role']=='tool' %}
+      {% include('function_call.html') %}
+    {% endif %}
+  {% endfor %}
+
+  <form action="/follow_up_message" method="POST">
+    <input type="hidden" name="slug" value="{{chat['slug']}}">
+    <textarea 
+      required 
+      name="question" 
+      placeholder="Type a follow up question here."
+    ></textarea>
+    <button>➡</button>
+  </form>
+  {% include('loader.html') %}
+</section>
