@@ -5,7 +5,7 @@
 
 [![PyPI Downloads](https://static.pepy.tech/badge/zaturn)](https://pepy.tech/projects/zaturn) 
 
-[![Join The Discord](https://zaturn.pro/assets/discord.png) Join The Discord](https://discord.gg/K8mECeVzpQ)
+[![Join The Discord](https://zaturn.pro/assets/discord.png =26x20) Join The Discord](https://discord.gg/K8mECeVzpQ)
 
 ## Just Chat With Your Data! No SQL, No Python.
 
