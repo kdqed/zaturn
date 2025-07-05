@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/kdqed-zaturn-badge.png)](https://mseep.ai/app/kdqed-zaturn)
+
 <h1>
   <img src="https://github.com/kdqed/zaturn/raw/main/zaturn/studio/static/logo.png" width="24" height="24">
   <span>Zaturn: Your Co-Pilot For Data Analytics & Business Insights</span>
