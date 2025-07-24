@@ -30,6 +30,10 @@ def list_tables(source):
                 for col in list(result):
                     if col.startswith("Tables_in_"):
                         return result[col].to_list()
+
+            case "mssql":
+                result = execute_query(source, "SELECT name FROM sys.tables")
+                return result['name'].to_list()
                 
             case "duckdb" | "csv" | "parquet" | "clickhouse":
                 result = execute_query(source, "SHOW TABLES")
@@ -46,7 +50,7 @@ def describe_table(source, table_name):
                 f'PRAGMA table_info("{table_name}");'
             )
             
-        case 'postgresql':
+        case 'postgresql' | 'mssql':
             return execute_query(source,
                 f"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{table_name}';"
             )
@@ -78,6 +82,14 @@ def execute_query(source: dict, query: str):
                 session.autocommit = False
                 session.flush = lambda *args: None
                 session.execute(sqlalchemy.text('SET SESSION TRANSACTION READ ONLY;'))
+                result = session.execute(sqlalchemy.text(query))
+                return pd.DataFrame(result)
+
+        case "mssql":
+            engine = sqlalchemy.create_engine(url)
+            with Session(engine) as session:
+                # no known way to ensure read-only here
+                # please use read-only credentials
                 result = session.execute(sqlalchemy.text(query))
                 return pd.DataFrame(result)
 

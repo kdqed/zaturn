@@ -1,3 +1,6 @@
+#### v.0.2.1 (2025-07-24)
+- Added Support For Microsoft SQL Server Databases
+
 ### v0.2.0 (2025-07-01)
 - The Studio Interface: Now use Zaturn with an inbuilt UI, with your own LLM API.
 - Refactored MCP Code.

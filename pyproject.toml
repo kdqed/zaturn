@@ -27,6 +27,7 @@ dependencies = [
     "plotly[express]>=6.0.1",
     "psycopg2-binary>=2.9.10",
     "pyarrow>=19.0.1",
+    "pymssql>=2.3.7",
     "pymysql>=1.1.1",
     "python-lsp-server>=1.12.2",
     "python-slugify>=8.0.4",

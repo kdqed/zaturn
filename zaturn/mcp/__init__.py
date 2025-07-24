@@ -56,6 +56,10 @@ for s in source_list:
         source_type = 'mysql'
         s = s.replace('mysql://', 'mysql+pymysql://')
         source_name = source.split('/')[-1].split('?')[0]
+    elif source.startswith("mssql://"):
+        source_type = 'mssql'
+        s = s.replace('mssql://', 'mssql+pymssql://')
+        source_name = source.split('/')[-1].split('?')[0]    
     elif source.startswith('clickhouse://'):
         source_type = 'clickhouse'
         source_name = source.split('/')[-1].split('?')[0]

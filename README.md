@@ -20,7 +20,7 @@ https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
 ### Multiple Data Sources 
 
 Zaturn can currently connect to the following data sources: 
-- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL, ClickHouse
+- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL, ClickHouse, SQL Server
 - Files: CSV, Parquet
 
 Connectors for more data sources are being added.
