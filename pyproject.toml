@@ -1,6 +1,6 @@
 [project]
 name = "zaturn"
-version = "0.2.0"
+version = "0.2.1"
 description = "AI Data Analysis MCP & Studio"
 authors = [
   {name = "Karthik Devan", email = "krtdvn@gmail.com"},
