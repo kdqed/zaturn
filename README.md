@@ -59,7 +59,6 @@ Analyst:
   I can get it done right now. Actually, you can do it right now.
   You know what? The boss can do it right now.
 ```
-- A native notebook interface 
 
 ## Help And Feedback
 
