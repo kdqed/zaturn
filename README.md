@@ -39,7 +39,7 @@ More visualization capabilities are being added.
 
 ## Installation & Setup
 
-See [https://zaturn.pro/install](https://zaturn.pro/install)
+See [https://zaturn.pro/docs/install](https://zaturn.pro/docs/install)
 
 
 ## Roadmap
