@@ -1,10 +1,11 @@
 import argparse
+import importlib.resources
 import os
 import platformdirs
-import pkg_resources
 import sys
 
 from fastmcp import FastMCP
+from fastmcp.tools.tool import Tool
 
 from zaturn.tools import ZaturnTools
 
@@ -30,19 +31,17 @@ if not source_list:
     source_list = args.sources
 
 if not source_list:
-    source_list = [
-        pkg_resources.resource_filename(
-            'zaturn',
-            os.path.join('mcp', 'example_data', 'all_pokemon_data.csv')
-        )
-    ]
+    with importlib.resources.path(
+        'zaturn.tools.example_data', 'all_pokemon_data.csv'
+    ) as source_path:
+        source_list = [str(source_path)]
+    
     print("No data sources provided. Loading example dataset for demonstration.")
     print(f"\nTo load your datasets, add them to {SOURCES_FILE} (one source URL or full file path per line)")
     print("\nOr use command line args to specify data sources:")
     print("zaturn_mcp sqlite:///path/to/mydata.db /path/to/my_file.csv")
     print(f"\nNOTE: Sources in command line args will be ignored if sources are found in {SOURCES_FILE}")
 
-    
 SOURCES = {}
 for s in source_list:
     source = s.lower()
@@ -90,8 +89,8 @@ for s in source_list:
 def ZaturnMCP(sources):
     zaturn_tools = ZaturnTools(sources)
     zaturn_mcp = FastMCP()
-    for tool in zaturn_tools.tools:
-        zaturn_mcp.add_tool(tool)
+    for tool_function in zaturn_tools.tools:
+        zaturn_mcp.add_tool(Tool.from_function(tool_function))
 
     return zaturn_mcp
 

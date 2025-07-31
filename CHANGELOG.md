@@ -1,4 +1,8 @@
-#### v.0.2.1 (2025-07-24)
+#### v0.2.2 (2025-07-31)
+- Fix for `'function' object has no attribute 'key'`
+- Changed `pkg_resources` dependency to `importlib.resources`
+
+#### v0.2.1 (2025-07-24)
 - Added Support For Microsoft SQL Server Databases
 
 ### v0.2.0 (2025-07-01)
