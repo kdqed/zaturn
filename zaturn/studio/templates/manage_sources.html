@@ -1,13 +1,13 @@
 <section id="manage-sources">
   {% if sources %}
-    <h1>🔗 Your Data Sources</h1>
+    <h1>{% include('icons/database.svg') %} Your Data Sources</h1>
     {% for key in sources %}
       {% with key=key, active=sources[key]['active'] %}
         {% include('c_source_card.html') %}
       {% endwith %}
     {% endfor %}
   {% else %}
-    <h1>➕ Add Some Data</h1>
+    <h1>{% include('icons/database.svg') %} Add Some Data</h1>
   {% endif %}
 
   <div class="row-c2">
@@ -22,7 +22,7 @@
         <input type="file" name="datafile" accept=".csv,.db,.sqlite,.sqlite3,.duckdb,.parquet,.pq" placeholder="" required>
         <small><em>CSV / SQLite / DuckDB / Parquet</em></small>
       </label>
-      <button>⬆ Upload</button>
+      <button>{% include('icons/upload.svg') %} Upload</button>
       <progress value='0' max='100'></progress>
     </form>
   
@@ -36,9 +36,9 @@
       <label>
         <small>Or Link A Database Using URL</small>
         <input type="text" name="db_url" required>
-        <small><em>PostgreSQL / MySQL / Clickhouse</em></small>
+        <small><em>PostgreSQL / MySQL / Clickhouse / MSSQL</em></small>
       </label>
-      <button>🔗 Connect</button>
+      <button>{% include('icons/link.svg') %} Connect</button>
     </form>
   </div>
   

@@ -19,13 +19,13 @@
         <img src="/static/logo.svg" class="logo">
       </a>
       <a href="/">
-        💬
+        {% include('icons/chat-bubble.svg') %}
       </a>
       <a href="/sources/manage" title="Manage Sources">
-        📎
+        {% include('icons/database.svg') %}
       </a>
       <a href="/settings" title="Settings">
-        🛠
+        {% include('icons/settings.svg') %}
       </a>
     </header>
     {% with slugs=slugs %}

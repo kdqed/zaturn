@@ -1,13 +1,13 @@
 <section id="settings">
   <h1>
-    <a href="/">⬅</a>
+    <a href="/">{% include('icons/arrow-left.svg') %}</a>
     Settings
   </h1>
   
   {% if updated %}
   <p class="alert">
     <code>{{updated}}</code> 
-    ✅ Settings Updated!
+    {% include('icons/check-circle-solid.svg') %} Settings Updated!
   </p>
   {% endif %}
   
@@ -24,6 +24,6 @@
       <small>OPENAI API ENDPOINT (Leave blank to use default)</small>
       <input type="text" name="api_endpoint" value="{{current['api_endpoint']}}">
     </label>
-    <button>💾 Save</button>
+    <button>{% include('icons/floppy-disk.svg') %} Save</button>
   </form>
 </section>

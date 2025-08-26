@@ -51,10 +51,8 @@ def create_chat(question: str):
     
     chat = {
         'slug': slug,
-        'messages': [{
-            'role': 'user',
-            'content': question,
-        }]
+        'messages': [],
+        'version': '0.3.x'
     }
     
     filename = CHATS_DIR / f'{slug}.json'
