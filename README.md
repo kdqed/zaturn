@@ -4,7 +4,7 @@
 </h1>
 
 <a href="https://discord.gg/K8mECeVzpQ">
-  <img src="https://zaturn.pro/assets/discord-full.png" height="20" width="133" alt="Discord Logo">
+  Join the Discord
 </a>
 
 ## Just Chat With Your Data! No SQL, No Python.
