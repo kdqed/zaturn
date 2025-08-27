@@ -223,6 +223,22 @@ form input:focus {
   border-bottom: 1px solid var(--t1);
 }
 
+form select {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: "Fira Code", monospace;
+  border-bottom: 1px solid var(--fg1);
+  color: var(--fg1);
+  font-size: 0.8rem;
+  padding: 0.2rem;
+}
+
+form select:focus {
+  color: var(--t1);
+  border-bottom: 1px solid var(--t1);
+}
+
 form button {
   justify-self: start;
   display: inline-flex;
@@ -240,10 +256,15 @@ form progress[value="0"] {
 }
 
 form textarea {
-  font-size: inherit;
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
   padding: 0.5rem;
   border: none;
   outline: none;
+}
+
+form textarea.large {
+  height: 7rem;
 }
 
 form.htmx-request {

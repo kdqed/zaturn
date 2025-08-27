@@ -62,6 +62,8 @@ def save_settings() -> str:
     app.config['state']['api_model'] = api_model
     app.config['state']['api_endpoint'] = api_endpoint
     app.config['state']['api_image_input'] = False
+    app.config['state']['reasoning_effort'] = request.form.get('reasoning_effort', 'none')
+    app.config['state']['system_prompt'] = request.form.get('system_prompt').strip('\n')
     
     try:
         model_info = httpx.get(
@@ -239,6 +241,8 @@ def create_new_chat():
         model_name = state['api_model'],
         tools = ZaturnTools(get_active_sources()).tools,
         image_input = state['api_image_input'],
+        reasoning_effort = state['reasoning_effort'],
+        system_prompt = state['system_prompt'],
     )
     chat['messages'] = agent.run(question)
     storage.save_chat(slug, chat)
@@ -274,6 +278,8 @@ def follow_up_message():
         model_name = state['api_model'],
         tools = ZaturnTools(get_active_sources()).tools,
         image_input = state['api_image_input'],
+        reasoning_effort = state['reasoning_effort'],
+        system_prompt = state['system_prompt'],
     )
     
     chat['messages'] = agent.run(

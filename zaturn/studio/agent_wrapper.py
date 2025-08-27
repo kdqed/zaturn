@@ -6,7 +6,7 @@ import httpx
 from mcp.types import ImageContent
 from pydantic_ai import Agent
 from pydantic_ai.messages import ModelMessagesTypeAdapter
-from pydantic_ai.models.openai import OpenAIModel
+from pydantic_ai.models.openai import OpenAIChatModel, OpenAIChatModelSettings
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_core import to_jsonable_python
 
@@ -19,34 +19,30 @@ class ZaturnAgent:
         model_name: str,
         tools: list = [],
         image_input: bool = False,
+        reasoning_effort: str = 'none',
+        system_prompt: str = '',
     ):
     
-        self._system_message = {
-            'role': 'system',
-            'content': """
-                You are a helpful data analysis assistant.
-                Use only the tool provided data sources to process user inputs.
-                Do not use external sources or your own knowledge base.
-                Also, the tool outputs are shown to the user.
-                So, please avoid repeating the tool outputs in the generated text.
-                Use list_sources and describe_table whenever needed, 
-                do not prompt the user for source names and column names.
-            """,
-        }
-
+        model_settings = None
+        reasoning_effort = reasoning_effort.lower()
+        if reasoning_effort in ['low', 'medium', 'high']:
+            model_settings = OpenAIChatModelSettings(
+                openai_reasoning_effort = reasoning_effort,
+            )
+            
         self._agent = Agent(
-            OpenAIModel(
+            OpenAIChatModel(
                 model_name,
                 provider = OpenAIProvider(
                     api_key = api_key,
                     base_url = endpoint,
                 )
             ),
-            system_prompt = self._system_message['content'],
+            model_settings = model_settings,
+            system_prompt = system_prompt or None,
             tools = tools,
         )
         
-
 
     def run(self, prompt, message_history = None):
         if message_history:
