@@ -1,7 +1,8 @@
 <div class="function-call">
-  <pre class="function-name"><b>fn_call</b><code>{{msg['call_details']['name']}}</code></pre>
-  {% if msg['call_details']['arguments'] %}
-    <p class="args">{{msg['call_details']['arguments'] | safe}}</p>
+  <b class="function-name">{% include('icons/wrench.svg') %} {{part['call_details']['name']}}</b>
+  <b class="exec-time">{% include('icons/timer.svg') %} {{part['call_details']['exec_time']}}s</b>
+  {% if part['call_details']['args_html'] %}
+    <p class="args">{{part['call_details']['args_html'] | safe}}</p>
   {% endif %}
-  <div class="function-output">{{ msg['html'] | safe}}</div>
+  <div class="function-output">{{ part['html_content'] | safe}}</div>
 </div>

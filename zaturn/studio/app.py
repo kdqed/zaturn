@@ -62,6 +62,8 @@ def save_settings() -> str:
     app.config['state']['api_model'] = api_model
     app.config['state']['api_endpoint'] = api_endpoint
     app.config['state']['api_image_input'] = False
+    app.config['state']['reasoning_effort'] = request.form.get('reasoning_effort', 'none')
+    app.config['state']['system_prompt'] = request.form.get('system_prompt').strip('\n')
     
     try:
         model_info = httpx.get(
@@ -195,31 +197,34 @@ def get_active_sources():
 
 def prepare_chat_for_render(chat):
     fn_calls = {}
-    for msg in chat['messages']:
-        if msg.get('role')=='assistant':
-            if msg.get('tool_calls'):
-                msg['is_tool_call'] = True
-                for tool_call in msg['tool_calls']:
-                    fn_call = tool_call['function']
-                    fn_call['arguments'] = tomli_w.dumps(
-                        json.loads(fn_call['arguments'])
-                    ).replace('\n', '<br>')
-                    fn_calls[tool_call['id']] = fn_call
-            else:
-                msg['html'] = mistune.html(msg['content'])
-        if msg.get('role')=='tool':
-            msg['call_details'] = fn_calls[msg['tool_call_id']]
-            if type(msg['content']) is str:
-                msg['html'] = mistune.html(json.loads(msg['text']))
-            elif type(msg['content']) is list:
-                msg['html'] = ''
-                for content in msg['content']:
-                    if content['type'] == 'image_url':
-                        data_url = content['image_url']['url']
-                        msg['html'] += f'<img src="{data_url}">'
-                    else:
-                        msg['html'] += mistune.html(json.loads(content['text']))
-                
+    
+    for message in chat['messages']:
+        for part in message['parts']:
+            if part['part_kind']=='text' and message['kind']=='response':
+                part['html_content'] = mistune.html(part['content'])
+            elif part['part_kind']=='tool-call':
+                fn_calls[part['tool_call_id']] = part
+                fn_calls[part['tool_call_id']]['timestamp'] = message['timestamp']
+            elif part['part_kind']=='tool-return':
+                fn_call = fn_calls[part['tool_call_id']]
+                part['call_details'] = {}
+                part['call_details']['name'] = fn_call['tool_name']
+
+                t1 = datetime.fromisoformat(fn_call['timestamp'])
+                t2 = datetime.fromisoformat(part['timestamp'])
+                part['call_details']['exec_time'] = (t2 - t1).seconds
+
+                part['call_details']['args_html'] = tomli_w.dumps(
+                    json.loads(fn_call['args'])
+                ).replace('\n', '<br>')
+
+                if type(part['content']) is str:
+                    part['html_content'] = mistune.html(part['content'])
+                elif type(part['content']) is dict and part['content']['type']=='image':
+                    data_url = f"data:{part['content']['mimeType']};base64,{part['content']['data']}"
+                    part['html_content'] = f'<img src="{data_url}">'
+                    
+
     return chat
 
 
@@ -230,22 +235,23 @@ def create_new_chat():
     chat = storage.load_chat(slug)
 
     state = app.config['state']
-    agent = agent_wrapper.Agent(
+    agent = agent_wrapper.ZaturnAgent(
         endpoint = state['api_endpoint'],
         api_key = state['api_key'],
-        model = state['api_model'],
+        model_name = state['api_model'],
         tools = ZaturnTools(get_active_sources()).tools,
         image_input = state['api_image_input'],
+        reasoning_effort = state['reasoning_effort'],
+        system_prompt = state['system_prompt'],
     )
-    chat['messages'] = agent.run(chat['messages'])
+    chat['messages'] = agent.run(question)
     storage.save_chat(slug, chat)
-    chat = prepare_chat_for_render(chat)
     
     return boost(
         ''.join([
             render_template('nav.html', slugs=storage.list_chats()),
             '<main id="main">',
-            render_template('chat.html', chat=chat),
+            render_template('chat.html', chat=prepare_chat_for_render(chat)),
             '</main>'
         ]),
         reswap = 'multi:#sidebar,#main',
@@ -264,25 +270,26 @@ def show_chat(slug: str):
 def follow_up_message():
     slug = request.form['slug']
     chat = storage.load_chat(slug)
-    chat['messages'].append({
-        'role': 'user', 
-        'content': request.form['question'],
-    })
-
+    
     state = app.config['state']
-    agent = agent_wrapper.Agent(
+    agent = agent_wrapper.ZaturnAgent(
         endpoint = state['api_endpoint'],
         api_key = state['api_key'],
-        model = state['api_model'],
+        model_name = state['api_model'],
         tools = ZaturnTools(get_active_sources()).tools,
         image_input = state['api_image_input'],
+        reasoning_effort = state['reasoning_effort'],
+        system_prompt = state['system_prompt'],
     )
-    chat['messages'] = agent.run(chat['messages'])
+    
+    chat['messages'] = agent.run(
+        prompt = request.form['question'],
+        message_history = chat['messages'],
+    )
     storage.save_chat(slug, chat)
-    chat = prepare_chat_for_render(chat)
-
+    
     return boost(
-        render_template('chat.html', chat=chat),
+        render_template('chat.html', chat=prepare_chat_for_render(chat)),
         push_url = 'false',
         reswap = 'innerHTML scroll:bottom',
     )

@@ -1,22 +1,30 @@
 <section id="chat">
-  {% for msg in chat['messages'] %}
-    {% if msg['role']=='user' %}
-      {% include('user_message.html') %}
-    {% elif msg['role']=='assistant' and not msg['is_tool_call'] %}
-      {% include('ai_message.html') %}
-    {% elif msg['role']=='tool' %}
-      {% include('function_call.html') %}
-    {% endif %}
-  {% endfor %}
+  {% if chat.get('schema_version', 0) >= 1 %}
+    {% for message in chat['messages'] %}
+      {% for part in message['parts'] %}
+        {% if part['part_kind']=='system-prompt' %}
+          {% include('chat_metadata.html') %}
+        {% elif part['part_kind']=='user-prompt' %}
+          {% include('user_message.html') %}
+        {% elif part['part_kind']=='text' and message['kind']=='response' %}
+          {% include('ai_message.html') %}
+        {% elif part['part_kind']=='tool-return' %}
+          {% include('function_call.html') %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
 
-  <form action="/follow_up_message" method="POST">
-    <input type="hidden" name="slug" value="{{chat['slug']}}">
-    <textarea 
-      required 
-      name="question" 
-      placeholder="Type a follow up question here."
-    ></textarea>
-    <button>➡</button>
-  </form>
-  {% include('loader.html') %}
+    <form action="/follow_up_message" method="POST">
+      <input type="hidden" name="slug" value="{{chat['slug']}}">
+      <textarea 
+        required 
+        name="question" 
+        placeholder="Type a follow up question here."
+      ></textarea>
+      <button>{% include('icons/arrow-right.svg') %}</button>
+    </form>
+    {% include('loader.html') %}
+  {% else %}
+    <pre><code>{{chat | tojson(indent=2)}}</code></pre>
+  {% endif %}
 </section>

@@ -1,3 +1,8 @@
+### v0.3.0 (2025-08-29)
+- Major changes in Studio UI; now more stable & smooth
+- Can set reasoing effort via settings in Studio UI
+- Can set system prompt via settings in Studio UI
+
 #### v0.2.2 (2025-07-31)
 - Fix for `'function' object has no attribute 'key'`
 - Changed `pkg_resources` dependency to `importlib.resources`

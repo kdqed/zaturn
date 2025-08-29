@@ -15,11 +15,6 @@
   src: url('/static/fira_code.ttf');
 }
 
-@font-face {
-  font-family: "Noto Emoji";
-  src: url('/static/noto_emoji.ttf');
-}
-
 /* Global Styles */
 * {
   box-sizing: border-box;
@@ -37,7 +32,7 @@
   --red: #d43a3a;
   --fg2: #3a4d74;
   --fg1: #182030;
-	--base-size: clamp(16px, 1.4vw, 32px);
+	--base-size: clamp(16px, 1.3vw, 32px);
 	--max-width: calc(var(--base-size)*36);
 	font-size: var(--base-size);
 	letter-spacing: 0.02rem;
@@ -55,6 +50,7 @@ body {
 	align-content: stretch;
 	height: 99vh;
 	line-height: 170%;
+	overflow-y: hidden;
 }
 
 a {
@@ -78,6 +74,11 @@ header a {
 header .logo {
   width: 2rem;
   height: 2rem;
+}
+
+header svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 #sidebar {
@@ -120,12 +121,22 @@ section {
 
 section h1 {
   margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+section h1 svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .btn, button {
   text-decoration: none;
   background: var(--bg2);
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 0.2rem;
   color: var(--t1);
@@ -145,6 +156,11 @@ section h1 {
   opacity: 0.8;
 }
 
+.btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 code {
   font-family: "Fira Code", monospace;
   font-size: 0.8rem;
@@ -160,6 +176,14 @@ code {
   background: var(--bg0);
   padding: 0.5rem;
   border: 1px solid var(--bg2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alert svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 
@@ -178,6 +202,9 @@ form label {
 
 form small {
   font-size: 0.8rem;
+}
+
+form small:first-child {
   font-weight: bold;
 }
 
@@ -196,8 +223,32 @@ form input:focus {
   border-bottom: 1px solid var(--t1);
 }
 
+form select {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: "Fira Code", monospace;
+  border-bottom: 1px solid var(--fg1);
+  color: var(--fg1);
+  font-size: 0.8rem;
+  padding: 0.2rem;
+}
+
+form select:focus {
+  color: var(--t1);
+  border-bottom: 1px solid var(--t1);
+}
+
 form button {
   justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+form button svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 form progress[value="0"] {
@@ -205,10 +256,15 @@ form progress[value="0"] {
 }
 
 form textarea {
-  font-size: inherit;
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
   padding: 0.5rem;
   border: none;
   outline: none;
+}
+
+form textarea.large {
+  height: 7rem;
 }
 
 form.htmx-request {
@@ -224,7 +280,14 @@ form ~ .loader {
 }
 
 form.htmx-request + .loader {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+form ~ .loader svg {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 @keyframes loadanim {
@@ -265,11 +328,18 @@ form.htmx-request + .loader {
 #manage-sources .source-card button {
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
 }
 
 #manage-sources .source-card button.inactive {
   filter: grayscale(100%);
 } 
+
+#manage-sources .source-card button svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
 
 #manage-sources .row-c2 {
   margin-top: 1.5rem;
@@ -301,8 +371,27 @@ form.htmx-request + .loader {
   padding: 1.5rem 0.5rem;
 }
 
-#chat ul {
+#chat ul, #chat ol {
   list-style-position: inside;
+}
+
+#chat .chat-metadata * {
+  font-family: "Fira Code", monospace;
+  font-size: 0.9rem;
+}
+
+#chat dt, #chat dd {
+  display: inline-block;
+}
+
+#chat dt {
+  font-weight: 700;
+}
+
+
+#chat .system-prompt-message summary {
+  cursor: pointer;
+  margin: 1rem 0;
 }
 
 #chat .user-message {
@@ -314,13 +403,26 @@ form.htmx-request + .loader {
 }
 
 #chat .user-message .sender {
+  font-size: 75%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 0.1rem solid var(--t1);
+  padding: 0.125rem 0.75rem;
+  border-radius: 2rem; 
   color: var(--t1);
-  border: 1px solid var(--t1);
-  padding: 0.125rem 0.5rem;
-  font-size: 70%;
+  margin-right: 0.5rem;
 }
 
+#chat .user-message .sender svg {
+  width: 1rem;
+  height: 1rem;
+}
 
+#chat .user-message>p {
+  padding-top: 0.25rem;
+}
 
 #chat .ai-message {
   display: grid;
@@ -332,30 +434,51 @@ form.htmx-request + .loader {
   font-size: 70%;
 }
 
+#chat .ai-message>div>* {
+  margin: 0.25rem 0;
+}
+
 
 #chat .function-call {
   display: grid;
   gap: 0.75rem;
   align-items: center;
+  grid-template-columns: auto 1fr;
 }
 
-#chat .function-name b {
+#chat .function-name {
   font-size: 75%;
-  display: inline-block;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background: var(--t1);
-  padding: 0rem 0.5rem;
+  border: 0.1rem solid var(--t1);
+  padding: 0.125rem 0.75rem;
   border-radius: 2rem; 
   color: var(--bg0);
   margin-right: 0.5rem;
 }
 
-#chat .function-call pre {
-  overflow-x: auto;
+#chat .function-name svg {
+  width: 1rem;
+  height: 1rem;
 }
 
-#chat .function-name code {
-  color: var(--t1);
-  font-weight: 700;
+#chat .function-call .exec-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+#chat .function-call .exec-time svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+#chat .function-call pre {
+  overflow-x: auto;
 }
 
 #chat .function-call .args {
@@ -365,10 +488,12 @@ form.htmx-request + .loader {
   font-family: Fira Code, monospace;
   font-size: 75%;
   line-height: 180%;
+  grid-column: 1 / -1;
 }
 
 #chat .function-output {
   overflow-x: auto;
+  grid-column: 1 / -1;
 }
 
 #chat table {

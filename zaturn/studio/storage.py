@@ -14,12 +14,24 @@ STATE_FILE = USER_DATA_DIR / 'studio.json'
 CHATS_DIR = USER_DATA_DIR / 'chats'
 os.makedirs(CHATS_DIR, exist_ok=True)
 
+DEFAULT_PROMPT = """
+You are a helpful data analysis assistant.
+Use only the tool provided data sources to process user inputs.
+Do not use external sources or your own knowledge base.
+Also, the tool outputs are shown to the user.
+So, please avoid repeating the tool outputs in the generated text.
+Use list_data_sources and describe_table whenever needed, 
+do not prompt the user for source names and column names.
+""".strip('\n')
+
 
 def load_state() -> dict:
     if os.path.exists(STATE_FILE):
         with open(STATE_FILE) as f:
             state = json.loads(f.read())
             state['sources'] = state.get('sources', {})
+            state['system_prompt'] = state.get('system_prompt', DEFAULT_PROMPT)
+            state['reasoning_effort'] = state.get('reasoning_effort', 'none') 
             return state
     else:
         return {}
@@ -51,10 +63,8 @@ def create_chat(question: str):
     
     chat = {
         'slug': slug,
-        'messages': [{
-            'role': 'user',
-            'content': question,
-        }]
+        'messages': [],
+        'schema_version': 1
     }
     
     filename = CHATS_DIR / f'{slug}.json'
