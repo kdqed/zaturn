@@ -26,6 +26,7 @@
 :root {
   --bg0: #ffffff;
   --bg1: #e4e9f1;
+  --bg1: #f4f9ff;
 	--bg2: #dde3ee;
   --t1: #336e80;
   --t2: #5dd9ac;
@@ -109,6 +110,7 @@ main {
   padding: 0.5rem;
   height: 100vh;
   overflow-y: scroll;
+  background: var(--bg1);
 }
 
 section {
@@ -138,7 +140,7 @@ section h1 svg {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  border-radius: 0.2rem;
+  border-radius: 0.3rem;
   color: var(--t1);
   font-weight: bold;
   cursor: pointer;
@@ -191,8 +193,7 @@ code {
 form {
   display: grid;
   gap: 1.5rem;
-  background: var(--bg0);
-  padding: 1rem 0.5rem;
+  padding: 1rem 0rem;
 }
 
 form label {
@@ -302,6 +303,17 @@ form ~ .loader svg {
   SCREEN WISE CSS
 */
 
+
+/* Settings */
+
+#settings form label {
+  border: 1px solid var(--bg2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--bg0);
+}
+
+
 /* Setup Prompt */
 
 #setup-prompt {
@@ -316,18 +328,19 @@ form ~ .loader svg {
   padding: 1rem;
   align-items: center;
   gap: 1rem;
-  border-top: 1px solid var(--bg2);
+  border: 1px solid var(--bg2);
+  border-radius: 0.5rem;
+  background: var(--bg0);
 }
 
 #manage-sources .source-card form {
   padding: 0;
   display: inline-block;
-  background: none;
 }
 
 #manage-sources .source-card button {
   font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.3rem 0.5rem;
   display: inline-flex;
   align-items: center;
 }
@@ -347,7 +360,9 @@ form ~ .loader svg {
 
 #manage-sources .row-c2 form {
   border: 1px solid var(--bg2);
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--bg0);
 }
 
 
@@ -362,13 +377,16 @@ form ~ .loader svg {
 /* Chat Display */
 
 #chat {
-  border-radius: 0.2rem;
+  border-radius: 0.5rem;
+  padding: 0;
 }
 
 #chat>* {
-  margin: 0;
-  border-bottom: 1px solid var(--bg2);
-  padding: 1.5rem 0.5rem;
+  margin: 0.5rem 0;
+  border: 1px solid var(--bg2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: var(--bg0);
 }
 
 #chat ul, #chat ol {
@@ -519,6 +537,16 @@ form ~ .loader svg {
   background: var(--bg1);
   border: 1px solid var(--bg2);
 }
+
+
+/* New Conversation */
+
+#new-conversation {
+  border-radius: 0.5rem;
+  background: var(--bg0);
+  padding: 2rem 1rem;
+}
+
 
 @media print {
   body {height: auto;}
