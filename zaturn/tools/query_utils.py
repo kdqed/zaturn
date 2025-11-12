@@ -1,12 +1,15 @@
+import os
+from typing import List
+
 import clickhouse_connect
 import duckdb
+from google.oauth2 import service_account
+from google.cloud import bigquery
 import numpy as np
-import os
 import pandas as pd
 import sqlalchemy
 from sqlalchemy.orm import Session
-import time
-from typing import List
+
 from zaturn.tools import config
 
 
@@ -39,6 +42,10 @@ def list_tables(source):
                 result = execute_query(source, "SHOW TABLES")
                 return result['name'].to_list()
 
+            case "bigquery":
+                result = execute_query(source, "SELECT table_name FROM INFORMATION_SCHEMA.TABLES")
+                return result['table_name'].to_list()
+
     except Exception as e:
         return str(e)
 
@@ -50,9 +57,9 @@ def describe_table(source, table_name):
                 f'PRAGMA table_info("{table_name}");'
             )
             
-        case 'postgresql' | 'mssql':
+        case 'postgresql' | 'mssql' | 'bigquery':
             return execute_query(source,
-                f"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{table_name}';"
+                f"SELECT column_name, data_type, is_nullable FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{table_name}';"
             )
             
         case "mysql" | "duckdb" | "csv" | "parquet" | "clickhouse":
@@ -62,7 +69,7 @@ def describe_table(source, table_name):
             return execute_query(source,
                 f'DESCRIBE {table_name};'
             )
-            
+    
 
 def execute_query(source: dict, query: str):
     """Run the query using the appropriate engine and read only config"""
@@ -123,22 +130,27 @@ def execute_query(source: dict, query: str):
             conn = duckdb.connect(database=':memory:')
             conn.execute(f"CREATE VIEW PARQUET AS SELECT * FROM read_parquet('{url}')")
             return conn.execute(query).df()
-        
+
+        case "bigquery":
+            credentials = None
+            if config.BIGQUERY_SERVICE_ACCOUNT_FILE:
+                credentials = service_account.Credentials.from_service_account_file(
+                    config.BIGQUERY_SERVICE_ACCOUNT_FILE,
+                )
+
+            chunks = source['url'].split('://')[1].split('/')
+            bq_client = bigquery.Client(
+                credentials = credentials, 
+                default_query_job_config = bigquery.QueryJobConfig(
+                    default_dataset = f'{chunks[0]}.{chunks[1]}'
+                )
+            )
+            
+            query_job = bq_client.query(query)
+            return query_job.result().to_dataframe()
+            
         case _:
             raise Exception("Unsupported Source")
 
 
-def save_query(df: pd.DataFrame):
-    """Save query results to disk and return a unique reference id"""
-    query_id = 'q' + str(int(time.time()))
-    filepath = os.path.join(config.QUERIES_DIR, f'{query_id}.parquet')
-    df.replace({np.nan: None}).to_parquet(filepath, engine='pyarrow', index=False)
-    return query_id
 
-
-def load_query(query_id: str):
-    """Load query results from disk using unique reference id"""
-    filepath = os.path.join(config.QUERIES_DIR, f'{query_id}.parquet')
-    df = pd.read_parquet(filepath, engine='pyarrow').replace({np.nan: None})
-    df.reset_index(drop=True, inplace=True)
-    return df

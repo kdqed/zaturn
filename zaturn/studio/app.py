@@ -167,6 +167,12 @@ def add_dataurl():
             'url': url,
             'active': True,
         }
+    elif url.startswith("bigquery://"):
+        app.config['state']['sources'][f'{name}-bigquery'] = {
+            'source_type': 'bigquery',
+            'url': url,
+            'active': True,
+        }
     else:
         pass
 

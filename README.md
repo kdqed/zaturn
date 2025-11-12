@@ -3,10 +3,6 @@
   <span>Zaturn: Your Co-Pilot For Data Analytics & Business Insights</span>
 </h1>
 
-<a href="https://discord.gg/K8mECeVzpQ">
-  Join the Discord
-</a>
-
 ## Just Chat With Your Data! No SQL, No Python.
 
 Zaturn provides tools that enable AI models to run SQL, so you don't have to. It can be used as an MCP or as a web interface similar to Jupyter Notebook.
@@ -20,10 +16,10 @@ https://github.com/user-attachments/assets/d42dc433-e5ec-4b3e-bef0-5cfc097396ab
 ### Multiple Data Sources 
 
 Zaturn can currently connect to the following data sources: 
-- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL, ClickHouse, SQL Server
+- SQL Databases: PostgreSQL, SQLite, DuckDB, MySQL, ClickHouse, SQL Server, BigQuery
 - Files: CSV, Parquet
 
-Connectors for more data sources are being added.
+[Request data source by raising an issue](https://github.com/kdqed/zaturn/issues/new)
 
 ### Visualizations
 
@@ -33,8 +29,10 @@ In addition to providing tabular and textual summaries, Zaturn can also generate
 - Histograms
 - Strip and Box Plots
 - Bar Plots
+- Density Heatmap (aka. 2D Histograms)
+- Polar Scatter and Line Plots
 
-More visualization capabilities are being added.
+[Request visualizations by raising an issue](https://github.com/kdqed/zaturn/issues/new)
 
 
 ## Installation & Setup
@@ -44,31 +42,21 @@ See [https://zaturn.pro/docs/install](https://zaturn.pro/docs/install)
 
 ## Roadmap
 
-- Support for more data source types
-- More data visualizations
-- Predictive analysis and forecasting, e.g.:
-```
-Based on the revenue of the last 3 months, forecast next month's revenue.
-```
-- Generate Presentations & PDFs
-```
-Manager: 
-  I need a presentation to show the boss. Can you do it by EOD?
-Analyst: 
-  EOD?! Are you still in the 2010s? 
-  I can get it done right now. Actually, you can do it right now.
-  You know what? The boss can do it right now.
-```
+- Support for more data source types & more data visualizations as per community requests
+- Dashboard building: Pin queries and visuals to re-run without LLM calls.
+- Multi-user capabilities
+- Predictive Analytics and ML features
+
 
 ## Help And Feedback
 
-[Raise an issue](https://github.com/kdqed/zaturn/issues) or [join the Discord](https://discord.gg/K8mECeVzpQ).
-
+[Raise an issue](https://github.com/kdqed/zaturn/issues)
 
 ## Support The Project
 
 If you find Zaturn useful, please support this project by:
-- Starring the Project
+- Starring the project
+- Sponsoring the development
 - Spreading the word
 
 Your support will enable me to dedicate more of my time to Zaturn.

@@ -1,3 +1,8 @@
+### v0.4.0 (2025-11-12)
+- Added BigQuery as a supported data source
+- Added new visualizations: density heatmap, polar scatter plot, and polar line plot.
+- Minor changes in Studio UI
+
 ### v0.3.0 (2025-08-29)
 - Major changes in Studio UI; now more stable & smooth
 - Can set reasoing effort via settings in Studio UI

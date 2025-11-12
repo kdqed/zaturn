@@ -35,8 +35,8 @@
     <form action="/add_dataurl" method="POST">
       <label>
         <small>Or Link A Database Using URL</small>
-        <input type="text" name="db_url" required>
-        <small><em>PostgreSQL / MySQL / Clickhouse / MSSQL</em></small>
+        <input type="text" name="db_url" required autocomplete="off">
+        <small><em>PostgreSQL / MySQL / Clickhouse / MSSQL / BigQuery</em></small>
       </label>
       <button>{% include('icons/link.svg') %} Connect</button>
     </form>
