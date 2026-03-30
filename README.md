@@ -35,6 +35,10 @@ In addition to providing tabular and textual summaries, Zaturn can also generate
 [Request visualizations by raising an issue](https://github.com/kdqed/zaturn/issues/new)
 
 
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/kdqed-zaturn).
+
 ## Installation & Setup
 
 See [https://zaturn.pro/docs/install](https://zaturn.pro/docs/install)
